@@ -1,0 +1,53 @@
+[
+  {
+    "id": "INC-001",
+    "trackingNumber": "MY987623400",
+    "title": "Damaged Parcel",
+    "description": "Coffee machine crushed during transit",
+    "priority": "HIGH",
+    "category": "Damage",
+    "status": "open",
+    "assignedTo": "agent01",
+    "createdAt": "2026-05-10T08:30:00Z",
+    "updatedAt": "2026-05-10T08:30:00Z",
+    "resolvedAt": null,
+    "notes": [],
+    "attachments": []
+  },
+  {
+    "id": "INC-002",
+    "trackingNumber": "MY44567789",
+    "title": "Address Change Not Actioned",
+    "description": "Parcel missing - address change request was not processed",
+    "priority": "MEDIUM",
+    "category": "Delivery",
+    "status": "in_progress",
+    "assignedTo": "agent01",
+    "createdAt": "2026-05-09T14:15:00Z",
+    "updatedAt": "2026-05-12T10:45:00Z",
+    "resolvedAt": null,
+    "notes": [
+      {
+        "author": "agent01",
+        "content": "Investigating address change request from customer",
+        "createdAt": "2026-05-12T10:45:00Z"
+      }
+    ],
+    "attachments": []
+  },
+  {
+    "id": "INC-003",
+    "trackingNumber": "MY556677890",
+    "title": "COD Overcharge",
+    "description": "Courier collected RM450 instead of RM250 for cash on delivery",
+    "priority": "MEDIUM",
+    "category": "Payment",
+    "status": "open",
+    "assignedTo": null,
+    "createdAt": "2026-05-11T16:20:00Z",
+    "updatedAt": "2026-05-11T16:20:00Z",
+    "resolvedAt": null,
+    "notes": [],
+    "attachments": []
+  }
+]

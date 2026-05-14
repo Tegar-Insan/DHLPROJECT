@@ -1,0 +1,18 @@
+[
+  {
+    "id": "usr_001",
+    "username": "admin",
+    "password": "admin123",
+    "role": "admin",
+    "name": "Administrator",
+    "email": "admin@dhl.com"
+  },
+  {
+    "id": "usr_002",
+    "username": "agent01",
+    "password": "agent123",
+    "role": "agent",
+    "name": "Agent One",
+    "email": "agent01@dhl.com"
+  }
+]
