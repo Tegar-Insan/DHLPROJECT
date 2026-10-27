@@ -1,19 +1,20 @@
 const express = require('express');
 const { generateToken, verifyToken } = require('../utils/jwt');
-const { getUserByUsername } = require('../utils/filedb');
+const { getUserByUsername } = require('../utils/db');
+const asyncHandler = require('../utils/asyncHandler');
 const { authMiddleware } = require('../middleware/auth');
 
 const router = express.Router();
 
 // Login endpoint
-router.post('/login', (req, res) => {
+router.post('/login', asyncHandler(async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
     return res.status(400).json({ error: 'Username and password required' });
   }
 
-  const user = getUserByUsername(username);
+  const user = await getUserByUsername(username);
 
   if (!user || user.password !== password) {
     return res.status(401).json({ error: 'Invalid credentials' });
@@ -30,7 +31,7 @@ router.post('/login', (req, res) => {
       email: user.email
     }
   });
-});
+}));
 
 // Verify token endpoint
 router.get('/verify', authMiddleware, (req, res) => {

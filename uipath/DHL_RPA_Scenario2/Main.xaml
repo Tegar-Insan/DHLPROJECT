@@ -1,0 +1,684 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="Main" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:snm="clr-namespace:System.Net.Mail;assembly=System.Net.Mail" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<TextExpression.NamespacesForImplementation>
+<sco:Collection x:TypeArguments="x:String">
+<x:String>GlobalConstantsNamespace</x:String>
+<x:String>GlobalVariablesNamespace</x:String>
+<x:String>Newtonsoft.Json</x:String>
+<x:String>Newtonsoft.Json.Linq</x:String>
+<x:String>System</x:String>
+<x:String>System.Activities</x:String>
+<x:String>System.Activities.Expressions</x:String>
+<x:String>System.Activities.Statements</x:String>
+<x:String>System.Collections</x:String>
+<x:String>System.Collections.Generic</x:String>
+<x:String>System.Collections.ObjectModel</x:String>
+<x:String>System.Diagnostics</x:String>
+<x:String>System.IO</x:String>
+<x:String>System.IO.Compression</x:String>
+<x:String>System.Linq</x:String>
+<x:String>System.Linq.Expressions</x:String>
+<x:String>System.Net</x:String>
+<x:String>System.Net.Http</x:String>
+<x:String>System.Net.Mail</x:String>
+<x:String>System.Text</x:String>
+<x:String>System.Text.RegularExpressions</x:String>
+<x:String>System.Security</x:String>
+<x:String>System.Security.Cryptography</x:String>
+<x:String>System.Globalization</x:String>
+<x:String>System.Drawing</x:String>
+<x:String>System.Drawing.Imaging</x:String>
+<x:String>System.Windows.Forms</x:String>
+<x:String>System.Web</x:String>
+<x:String>System.ComponentModel</x:String>
+<x:String>System.Reflection</x:String>
+<x:String>System.Runtime.Serialization</x:String>
+<x:String>Microsoft.VisualBasic</x:String>
+<x:String>UiPath.Core</x:String>
+<x:String>UiPath.Core.Activities</x:String>
+<x:String>UiPath.Platform.ResourceHandling</x:String>
+<x:String>UiPath.Shared.Activities</x:String>
+<x:String>UiPath.Mail</x:String>
+<x:String>UiPath.Mail.IMAP.Activities</x:String>
+<x:String>UiPath.Mail.Activities</x:String>
+</sco:Collection>
+</TextExpression.NamespacesForImplementation>
+<TextExpression.ReferencesForImplementation>
+<sco:Collection x:TypeArguments="AssemblyReference">
+<AssemblyReference>System.ComponentModel.TypeConverter</AssemblyReference>
+<AssemblyReference>System.Linq</AssemblyReference>
+<AssemblyReference>System.ObjectModel</AssemblyReference>
+<AssemblyReference>UiPath.System.Activities</AssemblyReference>
+<AssemblyReference>UiPath.Studio.Constants</AssemblyReference>
+<AssemblyReference>System.Private.CoreLib</AssemblyReference>
+<AssemblyReference>System.Linq.Expressions</AssemblyReference>
+<AssemblyReference>System.Console</AssemblyReference>
+<AssemblyReference>System.ComponentModel</AssemblyReference>
+<AssemblyReference>System.Memory</AssemblyReference>
+<AssemblyReference>System.Private.Uri</AssemblyReference>
+<AssemblyReference>System.Collections</AssemblyReference>
+<AssemblyReference>System.Collections.NonGeneric</AssemblyReference>
+<AssemblyReference>Newtonsoft.Json</AssemblyReference>
+<AssemblyReference>System.Runtime.Serialization.Primitives</AssemblyReference>
+<AssemblyReference>PresentationFramework</AssemblyReference>
+<AssemblyReference>WindowsBase</AssemblyReference>
+<AssemblyReference>System.ComponentModel.Primitives</AssemblyReference>
+<AssemblyReference>System.Collections.Specialized</AssemblyReference>
+<AssemblyReference>UiPath.Platform</AssemblyReference>
+<AssemblyReference>System.Text.RegularExpressions</AssemblyReference>
+<AssemblyReference>System.IO.Compression</AssemblyReference>
+<AssemblyReference>System.Net.Http</AssemblyReference>
+<AssemblyReference>System.Net.Primitives</AssemblyReference>
+<AssemblyReference>System.Net.Mail</AssemblyReference>
+<AssemblyReference>System.Runtime.InteropServices</AssemblyReference>
+<AssemblyReference>System.Runtime.Numerics</AssemblyReference>
+<AssemblyReference>Microsoft.VisualBasic.Core</AssemblyReference>
+<AssemblyReference>Microsoft.VisualBasic.Forms</AssemblyReference>
+<AssemblyReference>System.Web.HttpUtility</AssemblyReference>
+<AssemblyReference>System.Drawing.Common</AssemblyReference>
+<AssemblyReference>System.Drawing.Primitives</AssemblyReference>
+<AssemblyReference>System.Windows.Forms</AssemblyReference>
+<AssemblyReference>System.Security.Cryptography</AssemblyReference>
+<AssemblyReference>UiPath.Mail.Activities</AssemblyReference>
+<AssemblyReference>UiPath.Mail</AssemblyReference>
+<AssemblyReference>UiPath.Mail.Activities.Design</AssemblyReference>
+<AssemblyReference>System.Memory.Data</AssemblyReference>
+</sco:Collection>
+</TextExpression.ReferencesForImplementation>
+<Sequence DisplayName="DHL Incident RPA - Scenario 2 (OpenAI)" sap2010:Annotation.AnnotationText="DHL Incident RPA - Scenario 2 (Incident Reporting System)&#xA;Single inbox folder: &lt;InboxRoot&gt;\Incoming (Gmail + Drive fetches land here; you can also drop files in manually).&#xA;Files sharing a prefix before '__' are one case (e.g. MY987623400__email.txt + MY987623400__photo.jpg).&#xA;Per case: read -&gt; dedup -&gt; OpenAI extraction (text, images, PDFs) -&gt; POST import-bundle -&gt; PATCH status -&gt; report.&#xA;Set OPENAI_API_KEY as a Windows user environment variable (setx OPENAI_API_KEY &quot;sk-...&quot;) or fill the OpenAIApiKey variable." sap2010:WorkflowViewState.IdRef="Sequence_43">
+<Sequence.Variables>
+<Variable x:TypeArguments="x:String" Default="C:\DHL_Inbox" Name="InboxRoot" />
+<Variable x:TypeArguments="x:String" Default="http://localhost:3001" Name="ApiBaseUrl" />
+<Variable x:TypeArguments="x:String" Default="/api/rpa/import-bundle" Name="BundlePath" />
+<Variable x:TypeArguments="x:String" Default="/api/rpa/status" Name="StatusPath" />
+<Variable x:TypeArguments="x:String" Default="dhl-rpa-dev-key" Name="ApiKey" />
+<Variable x:TypeArguments="x:String" Default="Triaged" Name="AutoStatus" />
+<Variable x:TypeArguments="x:Boolean" Default="True" Name="OpenAIEnabled" />
+<Variable x:TypeArguments="x:String" Name="OpenAIApiKey">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Default="gpt-4o-mini" Name="OpenAIModel" />
+<Variable x:TypeArguments="x:String" Default="https://api.openai.com/v1/chat/completions" Name="OpenAIEndpoint" />
+<Variable x:TypeArguments="x:Int32" Default="15" Name="MaxAttachmentMB" />
+<Variable x:TypeArguments="x:String" Default="\b(?:MY|SG|ID|TH|VN|PH|HK|CN)\d{6,14}\b" Name="ShipmentRegex" />
+<Variable x:TypeArguments="x:Int32" Default="14" Name="DedupWindowDays" />
+<Variable x:TypeArguments="x:Boolean" Default="False" Name="GmailFetchEnabled" />
+<Variable x:TypeArguments="x:String" Name="GmailUser">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="GmailAppPassword">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:Int32" Default="50" Name="GmailMaxMessages" />
+<Variable x:TypeArguments="x:Boolean" Default="False" Name="DriveFetchEnabled" />
+<Variable x:TypeArguments="x:String" Name="GoogleClientId">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="GoogleClientSecret">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="GoogleRefreshToken">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="GoogleDriveFolderId">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:Boolean" Default="False" Name="EmailSummaryEnabled" />
+<Variable x:TypeArguments="x:String" Default="smtp.gmail.com" Name="SmtpHost" />
+<Variable x:TypeArguments="x:Int32" Default="587" Name="SmtpPort" />
+<Variable x:TypeArguments="x:String" Name="SmtpUser">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="SmtpPassword">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="AdminEmail">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="IncomingDir">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="ProcessedDir">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="FailedDir">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="ReportsDir">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="HashLogFile">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="RunLogFile">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="ReportCsvFile">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="RunId">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="s:DateTime" Name="RunStartTime" />
+<Variable x:TypeArguments="x:String" Name="LogBuilderStr">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="ReportRows">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="RunSummaryText">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="GoogleAccessToken">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="scg:IEnumerable(snm:MailMessage)" Name="mailMessages" />
+<Variable x:TypeArguments="scg:List(s:String[])" Name="caseList" />
+<Variable x:TypeArguments="x:Int32" Default="0" Name="gmailFetchedCount" />
+<Variable x:TypeArguments="x:Int32" Default="0" Name="driveFetchedCount" />
+<Variable x:TypeArguments="x:Int32" Default="0" Name="caseCount" />
+<Variable x:TypeArguments="x:Int32" Default="0" Name="createdCount" />
+<Variable x:TypeArguments="x:Int32" Default="0" Name="mergedCount" />
+<Variable x:TypeArguments="x:Int32" Default="0" Name="duplicateCount" />
+<Variable x:TypeArguments="x:Int32" Default="0" Name="failedCount" />
+<Variable x:TypeArguments="x:Int32" Default="0" Name="aiSuccessCount" />
+<Variable x:TypeArguments="x:Int32" Default="0" Name="aiFallbackCount" />
+</Sequence.Variables>
+<sap:WorkflowViewStateService.ViewState>
+<scg:Dictionary x:TypeArguments="x:String, x:Object">
+<x:Boolean x:Key="IsExpanded">True</x:Boolean>
+</scg:Dictionary>
+</sap:WorkflowViewStateService.ViewState>
+<ui:InvokeCode ContinueOnError="{x:Null}" Code="' Prepare the single inbox folder structure, resolve secrets from environment variables, start the log.&#xA;RunStartTime = DateTime.Now&#xA;RunId = DateTime.Now.ToString(&quot;yyyyMMdd_HHmmss&quot;)&#xA;&#xA;IncomingDir = System.IO.Path.Combine(InboxRoot, &quot;Incoming&quot;)&#xA;ProcessedDir = System.IO.Path.Combine(InboxRoot, &quot;_processed&quot;)&#xA;FailedDir = System.IO.Path.Combine(InboxRoot, &quot;_failed&quot;)&#xA;ReportsDir = System.IO.Path.Combine(InboxRoot, &quot;_reports&quot;)&#xA;&#xA;Dim folderList As String() = New String() {IncomingDir, ProcessedDir, FailedDir, ReportsDir, System.IO.Path.Combine(ProcessedDir, &quot;duplicates&quot;)}&#xA;For Each d As String In folderList&#xA;    System.IO.Directory.CreateDirectory(d)&#xA;Next&#xA;&#xA;HashLogFile = System.IO.Path.Combine(ProcessedDir, &quot;hashes.csv&quot;)&#xA;RunLogFile = System.IO.Path.Combine(ReportsDir, &quot;run_&quot; &amp; RunId &amp; &quot;.log&quot;)&#xA;ReportCsvFile = System.IO.Path.Combine(ReportsDir, &quot;report_&quot; &amp; RunId &amp; &quot;.csv&quot;)&#xA;&#xA;' OpenAI key: variable first, then process env, then user env (setx OPENAI_API_KEY &quot;sk-...&quot;)&#xA;If String.IsNullOrWhiteSpace(OpenAIApiKey) Then&#xA;    Dim envKey As String = Environment.GetEnvironmentVariable(&quot;OPENAI_API_KEY&quot;)&#xA;    If String.IsNullOrWhiteSpace(envKey) Then&#xA;        envKey = Environment.GetEnvironmentVariable(&quot;OPENAI_API_KEY&quot;, EnvironmentVariableTarget.User)&#xA;    End If&#xA;    If envKey Is Nothing Then&#xA;        envKey = &quot;&quot;&#xA;    End If&#xA;    OpenAIApiKey = envKey.Trim()&#xA;End If&#xA;&#xA;' Backend API key can also be overridden by env var DHL_RPA_API_KEY&#xA;Dim envApi As String = Environment.GetEnvironmentVariable(&quot;DHL_RPA_API_KEY&quot;)&#xA;If String.IsNullOrWhiteSpace(envApi) Then&#xA;    envApi = Environment.GetEnvironmentVariable(&quot;DHL_RPA_API_KEY&quot;, EnvironmentVariableTarget.User)&#xA;End If&#xA;If Not String.IsNullOrWhiteSpace(envApi) Then&#xA;    ApiKey = envApi.Trim()&#xA;End If&#xA;&#xA;Dim stamp As String = &quot;[&quot; &amp; DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;) &amp; &quot;] &quot;&#xA;LogBuilderStr = stamp &amp; &quot;Run &quot; &amp; RunId &amp; &quot; started.&quot; &amp; Environment.NewLine&#xA;LogBuilderStr = LogBuilderStr &amp; stamp &amp; &quot;Inbox folder: &quot; &amp; IncomingDir &amp; Environment.NewLine&#xA;LogBuilderStr = LogBuilderStr &amp; stamp &amp; &quot;Backend: &quot; &amp; ApiBaseUrl &amp; Environment.NewLine&#xA;If OpenAIApiKey.Length &gt; 0 Then&#xA;    LogBuilderStr = LogBuilderStr &amp; stamp &amp; &quot;OpenAI key found - AI extraction ON (model &quot; &amp; OpenAIModel &amp; &quot;)&quot; &amp; Environment.NewLine&#xA;Else&#xA;    LogBuilderStr = LogBuilderStr &amp; stamp &amp; &quot;WARNING: OpenAI key not set - incidents will use backend rule-based triage only&quot; &amp; Environment.NewLine&#xA;End If&#xA;&#xA;ReportRows = &quot;RunId,Timestamp,CaseKey,Files,ShipmentId,Title,Category,Department,Priority,AIConfidence,AIUsed,IncidentCode,Merged,HttpStatus,Result,Error&quot; &amp; Environment.NewLine&#xA;" DisplayName="1. Init - folders, secrets, run log" sap2010:WorkflowViewState.IdRef="InvokeCode_1">
+<ui:InvokeCode.Arguments>
+<InArgument x:TypeArguments="x:String" x:Key="InboxRoot">[InboxRoot]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="ApiBaseUrl">[ApiBaseUrl]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="OpenAIModel">[OpenAIModel]</InArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="OpenAIApiKey">[OpenAIApiKey]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="ApiKey">[ApiKey]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="IncomingDir">[IncomingDir]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="ProcessedDir">[ProcessedDir]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="FailedDir">[FailedDir]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="ReportsDir">[ReportsDir]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="HashLogFile">[HashLogFile]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="RunLogFile">[RunLogFile]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="ReportCsvFile">[ReportCsvFile]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="RunId">[RunId]</InOutArgument>
+<InOutArgument x:TypeArguments="s:DateTime" x:Key="RunStartTime">[RunStartTime]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="LogBuilderStr">[LogBuilderStr]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="ReportRows">[ReportRows]</InOutArgument>
+</ui:InvokeCode.Arguments>
+</ui:InvokeCode>
+<If Condition="[GmailFetchEnabled AndAlso Not String.IsNullOrWhiteSpace(GmailUser) AndAlso Not String.IsNullOrWhiteSpace(GmailAppPassword)]" DisplayName="2. Fetch raw inputs - Gmail (if enabled)" sap2010:WorkflowViewState.IdRef="If_6">
+<If.Then>
+<Sequence DisplayName="Fetch from Gmail (IMAP)" sap2010:WorkflowViewState.IdRef="Sequence_5">
+<sap:WorkflowViewStateService.ViewState>
+<scg:Dictionary x:TypeArguments="x:String, x:Object">
+<x:Boolean x:Key="IsExpanded">True</x:Boolean>
+</scg:Dictionary>
+</sap:WorkflowViewStateService.ViewState>
+<ui:GetIMAPMailMessages ClientName="{x:Null}" ClientVersion="{x:Null}" SecurePassword="{x:Null}" UseOAuth="{x:Null}" DeleteMessages="False" DisplayName="Get IMAP Mail Messages (Gmail)" Email="[GmailUser]" EnableSSL="True" FilterExpression="NOT SUBJECT &quot;DHL RPA Run&quot;" FilterExpressionCharacterSet="US-ASCII" sap2010:WorkflowViewState.IdRef="GetIMAPMailMessages_2" IgnoreCRL="False" MailFolder="INBOX" MarkAsRead="True" Messages="[mailMessages]" OnlyUnreadMessages="True" OrderByDate="NewestFirst" Password="[GmailAppPassword]" Port="993" SecureConnection="Auto" Server="imap.gmail.com" TimeoutMS="120000" Top="[GmailMaxMessages]" />
+<ui:InvokeCode ContinueOnError="{x:Null}" Code="' Save each fetched email (body + attachments) into the single Incoming folder.&#xA;' Files from one email share a case key prefix &quot;EMAIL-&lt;timestamp&gt;-&lt;n&gt;__&quot; so they are analysed together.&#xA;Dim saved As Integer = 0&#xA;Dim n As Integer = 0&#xA;If mailMessages IsNot Nothing Then&#xA;    For Each msg As System.Net.Mail.MailMessage In mailMessages&#xA;        n = n + 1&#xA;        Try&#xA;            Dim subj As String = If(msg.Subject, &quot;&quot;)&#xA;            Dim bodyText As String = If(msg.Body, &quot;&quot;)&#xA;            If msg.IsBodyHtml Then&#xA;                bodyText = System.Text.RegularExpressions.Regex.Replace(bodyText, &quot;&lt;(br|/p|/div|/tr|/li)[^&gt;]*&gt;&quot;, Environment.NewLine, System.Text.RegularExpressions.RegexOptions.IgnoreCase)&#xA;                bodyText = System.Text.RegularExpressions.Regex.Replace(bodyText, &quot;&lt;[^&gt;]+&gt;&quot;, &quot; &quot;)&#xA;                bodyText = System.Web.HttpUtility.HtmlDecode(bodyText)&#xA;            End If&#xA;&#xA;            Dim fromAddr As String = &quot;&quot;&#xA;            Dim fromName As String = &quot;&quot;&#xA;            If msg.From IsNot Nothing Then&#xA;                fromAddr = If(msg.From.Address, &quot;&quot;)&#xA;                fromName = If(msg.From.DisplayName, &quot;&quot;)&#xA;            End If&#xA;&#xA;            Dim sentDate As String = &quot;&quot;&#xA;            If msg.Headers IsNot Nothing AndAlso msg.Headers(&quot;Date&quot;) IsNot Nothing Then&#xA;                sentDate = msg.Headers(&quot;Date&quot;)&#xA;            End If&#xA;&#xA;            Dim mailKey As String = &quot;EMAIL-&quot; &amp; DateTime.Now.ToString(&quot;yyyyMMddHHmmssfff&quot;) &amp; &quot;-&quot; &amp; n.ToString(&quot;000&quot;)&#xA;            Dim textOut As String = &quot;Channel: Email&quot; &amp; Environment.NewLine &amp;&#xA;                                    &quot;From: &quot; &amp; fromName &amp; &quot; &lt;&quot; &amp; fromAddr &amp; &quot;&gt;&quot; &amp; Environment.NewLine &amp;&#xA;                                    &quot;Subject: &quot; &amp; subj &amp; Environment.NewLine &amp;&#xA;                                    &quot;Date: &quot; &amp; sentDate &amp; Environment.NewLine &amp;&#xA;                                    Environment.NewLine &amp; bodyText&#xA;            System.IO.File.WriteAllText(System.IO.Path.Combine(IncomingDir, mailKey &amp; &quot;__email.txt&quot;), textOut, System.Text.Encoding.UTF8)&#xA;&#xA;            Dim attCount As Integer = 0&#xA;            For Each att As System.Net.Mail.Attachment In msg.Attachments&#xA;                Try&#xA;                    Dim attName As String = If(String.IsNullOrWhiteSpace(att.Name), &quot;attachment.bin&quot;, att.Name)&#xA;                    For Each bad As Char In System.IO.Path.GetInvalidFileNameChars()&#xA;                        attName = attName.Replace(bad, &quot;_&quot;c)&#xA;                    Next&#xA;                    attName = attName.Replace(&quot;__&quot;, &quot;_&quot;)&#xA;                    If att.ContentStream.CanSeek Then&#xA;                        att.ContentStream.Position = 0&#xA;                    End If&#xA;                    Using fs As New System.IO.FileStream(System.IO.Path.Combine(IncomingDir, mailKey &amp; &quot;__att_&quot; &amp; attName), System.IO.FileMode.Create)&#xA;                        att.ContentStream.CopyTo(fs)&#xA;                    End Using&#xA;                    attCount = attCount + 1&#xA;                Catch attEx As Exception&#xA;                    LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;) &amp; &quot;] WARN could not save attachment: &quot; &amp; attEx.Message &amp; Environment.NewLine&#xA;                End Try&#xA;            Next&#xA;&#xA;            saved = saved + 1&#xA;            LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;) &amp; &quot;] Gmail: saved '&quot; &amp; subj &amp; &quot;' from &quot; &amp; fromAddr &amp; &quot; (&quot; &amp; attCount.ToString() &amp; &quot; attachment(s)) as &quot; &amp; mailKey &amp; Environment.NewLine&#xA;        Catch ex As Exception&#xA;            LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;) &amp; &quot;] ERROR saving email #&quot; &amp; n.ToString() &amp; &quot;: &quot; &amp; ex.Message &amp; Environment.NewLine&#xA;        End Try&#xA;    Next&#xA;End If&#xA;gmailFetchedCount = saved&#xA;" DisplayName="Save emails + attachments to Incoming" sap2010:WorkflowViewState.IdRef="InvokeCode_3">
+<ui:InvokeCode.Arguments>
+<InArgument x:TypeArguments="x:String" x:Key="IncomingDir">[IncomingDir]</InArgument>
+<InArgument x:TypeArguments="scg:IEnumerable(snm:MailMessage)" x:Key="mailMessages">[mailMessages]</InArgument>
+<InOutArgument x:TypeArguments="x:Int32" x:Key="gmailFetchedCount">[gmailFetchedCount]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="LogBuilderStr">[LogBuilderStr]</InOutArgument>
+</ui:InvokeCode.Arguments>
+</ui:InvokeCode>
+<ui:LogMessage DisplayName="Log Gmail result" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="[UiPath.Core.Activities.LogLevel.Info]" Message="[&quot;Gmail: &quot; &amp; gmailFetchedCount.ToString() &amp; &quot; email(s) saved to &quot; &amp; IncomingDir]" />
+</Sequence>
+</If.Then>
+</If>
+<If Condition="[DriveFetchEnabled]" DisplayName="3. Fetch raw inputs - Google Drive (if enabled)" sap2010:WorkflowViewState.IdRef="If_11">
+<If.Then>
+<Sequence DisplayName="Fetch from Google Drive (REST API)" sap2010:WorkflowViewState.IdRef="Sequence_10">
+<sap:WorkflowViewStateService.ViewState>
+<scg:Dictionary x:TypeArguments="x:String, x:Object">
+<x:Boolean x:Key="IsExpanded">True</x:Boolean>
+</scg:Dictionary>
+</sap:WorkflowViewStateService.ViewState>
+<ui:InvokeCode ContinueOnError="{x:Null}" Code="' Exchange the Google refresh token for a short-lived access token.&#xA;GoogleAccessToken = &quot;&quot;&#xA;If String.IsNullOrWhiteSpace(GoogleClientId) OrElse String.IsNullOrWhiteSpace(GoogleClientSecret) OrElse String.IsNullOrWhiteSpace(GoogleRefreshToken) Then&#xA;    LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;) &amp; &quot;] Drive: skipped - Google client id / secret / refresh token not set&quot; &amp; Environment.NewLine&#xA;Else&#xA;    Try&#xA;        Using http As New System.Net.Http.HttpClient()&#xA;            http.Timeout = TimeSpan.FromSeconds(30)&#xA;            Dim parameters As New System.Collections.Generic.Dictionary(Of String, String)()&#xA;            parameters.Add(&quot;client_id&quot;, GoogleClientId)&#xA;            parameters.Add(&quot;client_secret&quot;, GoogleClientSecret)&#xA;            parameters.Add(&quot;refresh_token&quot;, GoogleRefreshToken)&#xA;            parameters.Add(&quot;grant_type&quot;, &quot;refresh_token&quot;)&#xA;            Using form As New System.Net.Http.FormUrlEncodedContent(parameters)&#xA;                Dim resp As System.Net.Http.HttpResponseMessage = http.PostAsync(&quot;https://oauth2.googleapis.com/token&quot;, form).Result&#xA;                Dim respBody As String = resp.Content.ReadAsStringAsync().Result&#xA;                If resp.IsSuccessStatusCode Then&#xA;                    Dim parsed As Newtonsoft.Json.Linq.JObject = Newtonsoft.Json.Linq.JObject.Parse(respBody)&#xA;                    GoogleAccessToken = parsed.Value(Of String)(&quot;access_token&quot;)&#xA;                    LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;) &amp; &quot;] Drive: OAuth token refreshed&quot; &amp; Environment.NewLine&#xA;                Else&#xA;                    LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;) &amp; &quot;] Drive: OAuth refresh FAILED HTTP &quot; &amp; CInt(resp.StatusCode).ToString() &amp; &quot; - &quot; &amp; respBody &amp; Environment.NewLine&#xA;                End If&#xA;            End Using&#xA;        End Using&#xA;    Catch ex As Exception&#xA;        GoogleAccessToken = &quot;&quot;&#xA;        LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;) &amp; &quot;] Drive: OAuth exception - &quot; &amp; ex.Message &amp; Environment.NewLine&#xA;    End Try&#xA;End If&#xA;If GoogleAccessToken Is Nothing Then&#xA;    GoogleAccessToken = &quot;&quot;&#xA;End If&#xA;" DisplayName="Refresh Google OAuth token" sap2010:WorkflowViewState.IdRef="InvokeCode_7">
+<ui:InvokeCode.Arguments>
+<InArgument x:TypeArguments="x:String" x:Key="GoogleClientId">[GoogleClientId]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="GoogleClientSecret">[GoogleClientSecret]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="GoogleRefreshToken">[GoogleRefreshToken]</InArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="GoogleAccessToken">[GoogleAccessToken]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="LogBuilderStr">[LogBuilderStr]</InOutArgument>
+</ui:InvokeCode.Arguments>
+</ui:InvokeCode>
+<ui:InvokeCode ContinueOnError="{x:Null}" Code="' Download new files from the Google Drive folder into the single Incoming folder,&#xA;' then rename them in Drive to &quot;[processed] ...&quot; so they are not fetched twice.&#xA;' Grouping tip: name Drive files &quot;&lt;CASE&gt;__&lt;anything&gt;&quot; (e.g. MY987623400__photo.jpg) to analyse them as one case.&#xA;Dim downloaded As Integer = 0&#xA;If String.IsNullOrEmpty(GoogleAccessToken) OrElse String.IsNullOrWhiteSpace(GoogleDriveFolderId) Then&#xA;    LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;) &amp; &quot;] Drive: download skipped (no token or folder id)&quot; &amp; Environment.NewLine&#xA;Else&#xA;    Try&#xA;        Using http As New System.Net.Http.HttpClient()&#xA;            http.Timeout = TimeSpan.FromSeconds(90)&#xA;            http.DefaultRequestHeaders.Authorization = New System.Net.Http.Headers.AuthenticationHeaderValue(&quot;Bearer&quot;, GoogleAccessToken)&#xA;&#xA;            Dim q As String = &quot;'&quot; &amp; GoogleDriveFolderId &amp; &quot;' in parents and trashed=false and not name contains '[processed]'&quot;&#xA;            Dim listUrl As String = &quot;https://www.googleapis.com/drive/v3/files?q=&quot; &amp; System.Uri.EscapeDataString(q) &amp; &quot;&amp;fields=files(id,name,mimeType)&amp;pageSize=100&quot;&#xA;            Dim listResp As System.Net.Http.HttpResponseMessage = http.GetAsync(listUrl).Result&#xA;            Dim listBody As String = listResp.Content.ReadAsStringAsync().Result&#xA;&#xA;            If Not listResp.IsSuccessStatusCode Then&#xA;                LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;) &amp; &quot;] Drive: list FAILED HTTP &quot; &amp; CInt(listResp.StatusCode).ToString() &amp; &quot; - &quot; &amp; listBody &amp; Environment.NewLine&#xA;            Else&#xA;                Dim parsedList As Newtonsoft.Json.Linq.JObject = Newtonsoft.Json.Linq.JObject.Parse(listBody)&#xA;                Dim driveFiles As Newtonsoft.Json.Linq.JArray = TryCast(parsedList(&quot;files&quot;), Newtonsoft.Json.Linq.JArray)&#xA;                If driveFiles IsNot Nothing Then&#xA;                    For Each tok As Newtonsoft.Json.Linq.JToken In driveFiles&#xA;                        Dim fileId As String = tok.Value(Of String)(&quot;id&quot;)&#xA;                        Dim fileName As String = tok.Value(Of String)(&quot;name&quot;)&#xA;                        Dim mimeType As String = tok.Value(Of String)(&quot;mimeType&quot;)&#xA;                        Try&#xA;                            Dim dlUrl As String&#xA;                            If mimeType = &quot;application/vnd.google-apps.document&quot; Then&#xA;                                dlUrl = &quot;https://www.googleapis.com/drive/v3/files/&quot; &amp; fileId &amp; &quot;/export?mimeType=text%2Fplain&quot;&#xA;                                fileName = fileName &amp; &quot;.txt&quot;&#xA;                            ElseIf mimeType.StartsWith(&quot;application/vnd.google-apps.&quot;) Then&#xA;                                LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;) &amp; &quot;] Drive: skipped Google-native file '&quot; &amp; fileName &amp; &quot;' (&quot; &amp; mimeType &amp; &quot;)&quot; &amp; Environment.NewLine&#xA;                                Continue For&#xA;                            Else&#xA;                                dlUrl = &quot;https://www.googleapis.com/drive/v3/files/&quot; &amp; fileId &amp; &quot;?alt=media&quot;&#xA;                            End If&#xA;&#xA;                            Dim dlResp As System.Net.Http.HttpResponseMessage = http.GetAsync(dlUrl).Result&#xA;                            If Not dlResp.IsSuccessStatusCode Then&#xA;                                LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;) &amp; &quot;] Drive: download FAILED '&quot; &amp; fileName &amp; &quot;' HTTP &quot; &amp; CInt(dlResp.StatusCode).ToString() &amp; Environment.NewLine&#xA;                                Continue For&#xA;                            End If&#xA;                            Dim fileBytes As Byte() = dlResp.Content.ReadAsByteArrayAsync().Result&#xA;&#xA;                            Dim safeName As String = fileName&#xA;                            For Each bad As Char In System.IO.Path.GetInvalidFileNameChars()&#xA;                                safeName = safeName.Replace(bad, &quot;_&quot;c)&#xA;                            Next&#xA;                            Dim ts As String = DateTime.Now.ToString(&quot;yyyyMMddHHmmssfff&quot;)&#xA;                            Dim saveName As String&#xA;                            Dim sep As Integer = safeName.IndexOf(&quot;__&quot;)&#xA;                            If sep &gt; 0 Then&#xA;                                saveName = safeName.Substring(0, sep) &amp; &quot;__&quot; &amp; ts &amp; &quot;_&quot; &amp; safeName.Substring(sep + 2)&#xA;                            Else&#xA;                                saveName = &quot;DRIVE-&quot; &amp; ts &amp; &quot;-&quot; &amp; (downloaded + 1).ToString(&quot;000&quot;) &amp; &quot;__&quot; &amp; safeName&#xA;                            End If&#xA;                            System.IO.File.WriteAllBytes(System.IO.Path.Combine(IncomingDir, saveName), fileBytes)&#xA;                            downloaded = downloaded + 1&#xA;                            LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;) &amp; &quot;] Drive: downloaded '&quot; &amp; fileName &amp; &quot;' (&quot; &amp; fileBytes.Length.ToString() &amp; &quot; bytes) as &quot; &amp; saveName &amp; Environment.NewLine&#xA;&#xA;                            Try&#xA;                                Dim renameObj As New Newtonsoft.Json.Linq.JObject()&#xA;                                renameObj.Add(&quot;name&quot;, New Newtonsoft.Json.Linq.JValue(&quot;[processed] &quot; &amp; tok.Value(Of String)(&quot;name&quot;)))&#xA;                                Using renameReq As New System.Net.Http.HttpRequestMessage(New System.Net.Http.HttpMethod(&quot;PATCH&quot;), &quot;https://www.googleapis.com/drive/v3/files/&quot; &amp; fileId)&#xA;                                    renameReq.Content = New System.Net.Http.StringContent(renameObj.ToString(Newtonsoft.Json.Formatting.None), System.Text.Encoding.UTF8, &quot;application/json&quot;)&#xA;                                    http.SendAsync(renameReq).Wait()&#xA;                                End Using&#xA;                            Catch renameEx As Exception&#xA;                                LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;) &amp; &quot;] Drive: rename failed for '&quot; &amp; fileName &amp; &quot;': &quot; &amp; renameEx.Message &amp; Environment.NewLine&#xA;                            End Try&#xA;                        Catch fileEx As Exception&#xA;                            LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;) &amp; &quot;] Drive: error on '&quot; &amp; fileName &amp; &quot;': &quot; &amp; fileEx.Message &amp; Environment.NewLine&#xA;                        End Try&#xA;                    Next&#xA;                End If&#xA;            End If&#xA;        End Using&#xA;    Catch ex As Exception&#xA;        LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;) &amp; &quot;] Drive: exception - &quot; &amp; ex.Message &amp; Environment.NewLine&#xA;    End Try&#xA;End If&#xA;driveFetchedCount = downloaded&#xA;" DisplayName="Download Drive files to Incoming" sap2010:WorkflowViewState.IdRef="InvokeCode_8">
+<ui:InvokeCode.Arguments>
+<InArgument x:TypeArguments="x:String" x:Key="IncomingDir">[IncomingDir]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="GoogleAccessToken">[GoogleAccessToken]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="GoogleDriveFolderId">[GoogleDriveFolderId]</InArgument>
+<InOutArgument x:TypeArguments="x:Int32" x:Key="driveFetchedCount">[driveFetchedCount]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="LogBuilderStr">[LogBuilderStr]</InOutArgument>
+</ui:InvokeCode.Arguments>
+</ui:InvokeCode>
+<ui:LogMessage DisplayName="Log Drive result" sap2010:WorkflowViewState.IdRef="LogMessage_9" Level="[UiPath.Core.Activities.LogLevel.Info]" Message="[&quot;Drive: &quot; &amp; driveFetchedCount.ToString() &amp; &quot; file(s) saved to &quot; &amp; IncomingDir]" />
+</Sequence>
+</If.Then>
+</If>
+<ui:InvokeCode ContinueOnError="{x:Null}" Code="' Group every file in the single Incoming folder into &quot;cases&quot;.&#xA;' Case key = text before the first &quot;__&quot; in the file name (e.g. EMAIL-2026...-001__email.txt + EMAIL-2026...-001__att_photo.jpg),&#xA;' otherwise the file name without extension (each loose file is its own case).&#xA;Dim groups As New System.Collections.Generic.Dictionary(Of String, System.Collections.Generic.List(Of String))(StringComparer.OrdinalIgnoreCase)&#xA;Dim order As New System.Collections.Generic.List(Of String)()&#xA;&#xA;For Each f As String In System.IO.Directory.GetFiles(IncomingDir)&#xA;    Dim nm As String = System.IO.Path.GetFileName(f)&#xA;    If nm.StartsWith(&quot;~$&quot;) OrElse nm.StartsWith(&quot;.&quot;) OrElse nm.EndsWith(&quot;.tmp&quot;, StringComparison.OrdinalIgnoreCase) OrElse nm.Equals(&quot;desktop.ini&quot;, StringComparison.OrdinalIgnoreCase) OrElse nm.Equals(&quot;Thumbs.db&quot;, StringComparison.OrdinalIgnoreCase) Then&#xA;        Continue For&#xA;    End If&#xA;    Dim groupKey As String&#xA;    Dim p As Integer = nm.IndexOf(&quot;__&quot;)&#xA;    If p &gt; 0 Then&#xA;        groupKey = nm.Substring(0, p)&#xA;    Else&#xA;        groupKey = System.IO.Path.GetFileNameWithoutExtension(nm)&#xA;    End If&#xA;    If Not groups.ContainsKey(groupKey) Then&#xA;        groups(groupKey) = New System.Collections.Generic.List(Of String)()&#xA;        order.Add(groupKey)&#xA;    End If&#xA;    groups(groupKey).Add(f)&#xA;Next&#xA;&#xA;caseList = New System.Collections.Generic.List(Of String())()&#xA;For Each k As String In order&#xA;    Dim lst As System.Collections.Generic.List(Of String) = groups(k)&#xA;    lst.Sort(StringComparer.OrdinalIgnoreCase)&#xA;    caseList.Add(lst.ToArray())&#xA;Next&#xA;caseCount = caseList.Count&#xA;LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;) &amp; &quot;] Found &quot; &amp; caseCount.ToString() &amp; &quot; case(s) in &quot; &amp; IncomingDir &amp; Environment.NewLine&#xA;" DisplayName="4. Group Incoming files into cases" sap2010:WorkflowViewState.IdRef="InvokeCode_12">
+<ui:InvokeCode.Arguments>
+<InArgument x:TypeArguments="x:String" x:Key="IncomingDir">[IncomingDir]</InArgument>
+<InOutArgument x:TypeArguments="scg:List(s:String[])" x:Key="caseList">[caseList]</InOutArgument>
+<InOutArgument x:TypeArguments="x:Int32" x:Key="caseCount">[caseCount]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="LogBuilderStr">[LogBuilderStr]</InOutArgument>
+</ui:InvokeCode.Arguments>
+</ui:InvokeCode>
+<ui:LogMessage DisplayName="Log case count" sap2010:WorkflowViewState.IdRef="LogMessage_44" Level="[UiPath.Core.Activities.LogLevel.Info]" Message="[&quot;Found &quot; &amp; caseCount.ToString() &amp; &quot; case(s) in &quot; &amp; IncomingDir]" />
+<ui:ForEach x:TypeArguments="s:String[]" CurrentIndex="{x:Null}" DisplayName="5. For Each Case - process the input" sap2010:WorkflowViewState.IdRef="ForEach_37" Values="[caseList]">
+<ui:ForEach.Body>
+<ActivityAction x:TypeArguments="s:String[]">
+<ActivityAction.Argument>
+<DelegateInArgument x:TypeArguments="s:String[]" Name="caseFiles" />
+</ActivityAction.Argument>
+<Sequence DisplayName="Process case" sap2010:WorkflowViewState.IdRef="Sequence_38">
+<Sequence.Variables>
+<Variable x:TypeArguments="x:String" Name="caseKey">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="rawText">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="s:String[]" Name="imageFiles" />
+<Variable x:TypeArguments="s:String[]" Name="pdfFiles" />
+<Variable x:TypeArguments="x:String" Default="[]" Name="sourcesJson" />
+<Variable x:TypeArguments="x:String" Name="caseHash">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:Boolean" Default="False" Name="isDuplicate" />
+<Variable x:TypeArguments="x:String" Name="aiJson">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:Boolean" Default="False" Name="aiOk" />
+<Variable x:TypeArguments="x:String" Name="aiError">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="payloadJson">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="finalTitle">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="finalShipment">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="finalCategory">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="finalDepartment">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="finalPriority">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="finalConfidence">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="statusNote">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="responseText">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:Int32" Default="0" Name="httpStatus" />
+<Variable x:TypeArguments="x:String" Name="incidentCode">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:Boolean" Default="False" Name="mergedFlag" />
+<Variable x:TypeArguments="x:Int32" Default="0" Name="statusHttp" />
+<Variable x:TypeArguments="x:String" Name="caseResult">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+<Variable x:TypeArguments="x:String" Name="caseError">
+<Variable.Default>
+<Literal x:TypeArguments="x:String" Value="" />
+</Variable.Default>
+</Variable>
+</Sequence.Variables>
+<sap:WorkflowViewStateService.ViewState>
+<scg:Dictionary x:TypeArguments="x:String, x:Object">
+<x:Boolean x:Key="IsExpanded">True</x:Boolean>
+</scg:Dictionary>
+</sap:WorkflowViewStateService.ViewState>
+<TryCatch DisplayName="Try Catch (per case)" sap2010:WorkflowViewState.IdRef="TryCatch_35">
+<TryCatch.Try>
+<Sequence DisplayName="Try" sap2010:WorkflowViewState.IdRef="Sequence_31">
+<sap:WorkflowViewStateService.ViewState>
+<scg:Dictionary x:TypeArguments="x:String, x:Object">
+<x:Boolean x:Key="IsExpanded">True</x:Boolean>
+</scg:Dictionary>
+</sap:WorkflowViewStateService.ViewState>
+<ui:InvokeCode ContinueOnError="{x:Null}" Code="' Read every file of this case: text files and .docx are extracted to text, images and PDFs are queued for&#xA;' the OpenAI vision/file input. Also computes a SHA-256 over the case content for duplicate protection.&#xA;Dim firstName As String = System.IO.Path.GetFileName(caseFiles(0))&#xA;Dim sepPos As Integer = firstName.IndexOf(&quot;__&quot;)&#xA;If sepPos &gt; 0 Then&#xA;    caseKey = firstName.Substring(0, sepPos)&#xA;Else&#xA;    caseKey = System.IO.Path.GetFileNameWithoutExtension(firstName)&#xA;End If&#xA;&#xA;Dim textExt As String() = New String() {&quot;.txt&quot;, &quot;.md&quot;, &quot;.csv&quot;, &quot;.json&quot;, &quot;.log&quot;, &quot;.xml&quot;, &quot;.eml&quot;, &quot;.html&quot;, &quot;.htm&quot;}&#xA;Dim imgExt As String() = New String() {&quot;.jpg&quot;, &quot;.jpeg&quot;, &quot;.png&quot;, &quot;.webp&quot;, &quot;.gif&quot;}&#xA;&#xA;Dim sb As New System.Text.StringBuilder()&#xA;Dim imgs As New System.Collections.Generic.List(Of String)()&#xA;Dim pdfs As New System.Collections.Generic.List(Of String)()&#xA;Dim srcArr As New Newtonsoft.Json.Linq.JArray()&#xA;Dim allBytes As New System.IO.MemoryStream()&#xA;&#xA;For Each f As String In caseFiles&#xA;    Dim ext As String = System.IO.Path.GetExtension(f).ToLowerInvariant()&#xA;    Dim fname As String = System.IO.Path.GetFileName(f)&#xA;    Dim fileBytes As Byte() = System.IO.File.ReadAllBytes(f)&#xA;    allBytes.Write(fileBytes, 0, fileBytes.Length)&#xA;&#xA;    Dim fileText As String = &quot;&quot;&#xA;    Dim kind As String = &quot;text&quot;&#xA;&#xA;    If Array.IndexOf(textExt, ext) &gt;= 0 Then&#xA;        fileText = System.Text.Encoding.UTF8.GetString(fileBytes).TrimStart(ChrW(&amp;HFEFF))&#xA;        If ext = &quot;.html&quot; OrElse ext = &quot;.htm&quot; Then&#xA;            fileText = System.Text.RegularExpressions.Regex.Replace(fileText, &quot;&lt;(br|/p|/div|/tr|/li)[^&gt;]*&gt;&quot;, Environment.NewLine, System.Text.RegularExpressions.RegexOptions.IgnoreCase)&#xA;            fileText = System.Text.RegularExpressions.Regex.Replace(fileText, &quot;&lt;[^&gt;]+&gt;&quot;, &quot; &quot;)&#xA;            fileText = System.Web.HttpUtility.HtmlDecode(fileText)&#xA;        End If&#xA;    ElseIf ext = &quot;.docx&quot; Then&#xA;        kind = &quot;document&quot;&#xA;        Try&#xA;            Using ms As New System.IO.MemoryStream(fileBytes)&#xA;                Using zip As New System.IO.Compression.ZipArchive(ms, System.IO.Compression.ZipArchiveMode.Read)&#xA;                    Dim entry As System.IO.Compression.ZipArchiveEntry = zip.GetEntry(&quot;word/document.xml&quot;)&#xA;                    If entry IsNot Nothing Then&#xA;                        Using rdr As New System.IO.StreamReader(entry.Open())&#xA;                            Dim xml As String = rdr.ReadToEnd()&#xA;                            xml = xml.Replace(&quot;&lt;/w:p&gt;&quot;, vbLf).Replace(&quot;&lt;w:tab/&gt;&quot;, vbTab).Replace(&quot;&lt;w:br/&gt;&quot;, vbLf)&#xA;                            xml = System.Text.RegularExpressions.Regex.Replace(xml, &quot;&lt;[^&gt;]+&gt;&quot;, &quot;&quot;)&#xA;                            fileText = System.Web.HttpUtility.HtmlDecode(xml)&#xA;                        End Using&#xA;                    End If&#xA;                End Using&#xA;            End Using&#xA;        Catch docxEx As Exception&#xA;            fileText = &quot;&quot;&#xA;        End Try&#xA;    ElseIf ext = &quot;.pdf&quot; Then&#xA;        kind = &quot;pdf&quot;&#xA;        pdfs.Add(f)&#xA;    ElseIf Array.IndexOf(imgExt, ext) &gt;= 0 Then&#xA;        kind = &quot;image&quot;&#xA;        imgs.Add(f)&#xA;    Else&#xA;        kind = &quot;unsupported&quot;&#xA;    End If&#xA;&#xA;    If fileText.Trim().Length &gt; 0 Then&#xA;        sb.AppendLine(&quot;===== FILE: &quot; &amp; fname &amp; &quot; =====&quot;)&#xA;        sb.AppendLine(fileText.Trim())&#xA;        sb.AppendLine()&#xA;    End If&#xA;&#xA;    ' Channel guess: file name first, then the start of the text&#xA;    Dim lowerName As String = fname.ToLowerInvariant()&#xA;    Dim head As String = fileText&#xA;    If head.Length &gt; 400 Then&#xA;        head = head.Substring(0, 400)&#xA;    End If&#xA;    head = head.ToLowerInvariant()&#xA;    Dim ch As String = &quot;Upload&quot;&#xA;    If kind = &quot;image&quot; Then&#xA;        ch = &quot;Image&quot;&#xA;    ElseIf lowerName.Contains(&quot;whatsapp&quot;) Then&#xA;        ch = &quot;WhatsApp&quot;&#xA;    ElseIf lowerName.Contains(&quot;teams&quot;) Then&#xA;        ch = &quot;Teams&quot;&#xA;    ElseIf lowerName.Contains(&quot;call&quot;) Then&#xA;        ch = &quot;Call Note&quot;&#xA;    ElseIf lowerName.Contains(&quot;handwritten&quot;) OrElse lowerName.Contains(&quot;warehouse&quot;) Then&#xA;        ch = &quot;Handwritten Note&quot;&#xA;    ElseIf lowerName.StartsWith(&quot;email-&quot;) OrElse lowerName.Contains(&quot;email&quot;) OrElse ext = &quot;.eml&quot; Then&#xA;        ch = &quot;Email&quot;&#xA;    ElseIf head.Contains(&quot;email&quot;) OrElse head.Contains(&quot;subject:&quot;) Then&#xA;        ch = &quot;Email&quot;&#xA;    ElseIf head.Contains(&quot;whatsapp&quot;) Then&#xA;        ch = &quot;WhatsApp&quot;&#xA;    ElseIf head.Contains(&quot;teams&quot;) Then&#xA;        ch = &quot;Teams&quot;&#xA;    ElseIf head.Contains(&quot;call note&quot;) OrElse head.Contains(&quot;call center&quot;) OrElse head.Contains(&quot;call centre&quot;) Then&#xA;        ch = &quot;Call Note&quot;&#xA;    ElseIf head.Contains(&quot;handwritten&quot;) Then&#xA;        ch = &quot;Handwritten Note&quot;&#xA;    ElseIf kind = &quot;pdf&quot; OrElse kind = &quot;document&quot; Then&#xA;        ch = &quot;Document&quot;&#xA;    End If&#xA;&#xA;    Dim src As New Newtonsoft.Json.Linq.JObject()&#xA;    src.Add(&quot;file&quot;, New Newtonsoft.Json.Linq.JValue(fname))&#xA;    src.Add(&quot;kind&quot;, New Newtonsoft.Json.Linq.JValue(kind))&#xA;    src.Add(&quot;channel&quot;, New Newtonsoft.Json.Linq.JValue(ch))&#xA;    src.Add(&quot;text&quot;, New Newtonsoft.Json.Linq.JValue(fileText.Trim()))&#xA;    src.Add(&quot;timestamp&quot;, New Newtonsoft.Json.Linq.JValue(System.IO.File.GetLastWriteTimeUtc(f).ToString(&quot;o&quot;)))&#xA;    srcArr.Add(src)&#xA;Next&#xA;&#xA;rawText = sb.ToString()&#xA;imageFiles = imgs.ToArray()&#xA;pdfFiles = pdfs.ToArray()&#xA;sourcesJson = srcArr.ToString(Newtonsoft.Json.Formatting.None)&#xA;&#xA;' SHA-256 of the combined content (names are ignored because fetch timestamps change them)&#xA;Using sha As System.Security.Cryptography.SHA256 = System.Security.Cryptography.SHA256.Create()&#xA;    caseHash = BitConverter.ToString(sha.ComputeHash(allBytes.ToArray())).Replace(&quot;-&quot;, &quot;&quot;).ToLowerInvariant()&#xA;End Using&#xA;&#xA;isDuplicate = False&#xA;If System.IO.File.Exists(HashLogFile) Then&#xA;    Dim cutoff As DateTime = DateTime.UtcNow.AddDays(-DedupWindowDays)&#xA;    For Each line As String In System.IO.File.ReadAllLines(HashLogFile)&#xA;        Dim parts As String() = line.Split(&quot;,&quot;c)&#xA;        If parts.Length &gt;= 2 AndAlso parts(0).Trim() = caseHash Then&#xA;            Dim seenAt As DateTime&#xA;            If DateTime.TryParse(parts(1), System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.RoundtripKind, seenAt) Then&#xA;                If seenAt.ToUniversalTime() &gt;= cutoff Then&#xA;                    isDuplicate = True&#xA;                    Exit For&#xA;                End If&#xA;            End If&#xA;        End If&#xA;    Next&#xA;End If&#xA;" DisplayName="5a. Read files + extract text + SHA-256 dedup check" sap2010:WorkflowViewState.IdRef="InvokeCode_13">
+<ui:InvokeCode.Arguments>
+<InArgument x:TypeArguments="s:String[]" x:Key="caseFiles">[caseFiles]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="HashLogFile">[HashLogFile]</InArgument>
+<InArgument x:TypeArguments="x:Int32" x:Key="DedupWindowDays">[DedupWindowDays]</InArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="caseKey">[caseKey]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="rawText">[rawText]</InOutArgument>
+<InOutArgument x:TypeArguments="s:String[]" x:Key="imageFiles">[imageFiles]</InOutArgument>
+<InOutArgument x:TypeArguments="s:String[]" x:Key="pdfFiles">[pdfFiles]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="sourcesJson">[sourcesJson]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="caseHash">[caseHash]</InOutArgument>
+<InOutArgument x:TypeArguments="x:Boolean" x:Key="isDuplicate">[isDuplicate]</InOutArgument>
+</ui:InvokeCode.Arguments>
+</ui:InvokeCode>
+<If Condition="[isDuplicate]" DisplayName="Duplicate?" sap2010:WorkflowViewState.IdRef="If_30">
+<If.Then>
+<Sequence DisplayName="Duplicate - skip" sap2010:WorkflowViewState.IdRef="Sequence_16">
+<sap:WorkflowViewStateService.ViewState>
+<scg:Dictionary x:TypeArguments="x:String, x:Object">
+<x:Boolean x:Key="IsExpanded">True</x:Boolean>
+</scg:Dictionary>
+</sap:WorkflowViewStateService.ViewState>
+<ui:InvokeCode ContinueOnError="{x:Null}" Code="' Same content already posted within the dedup window: skip it, move to _processed\duplicates, report it.&#xA;duplicateCount = duplicateCount + 1&#xA;Dim stamp As String = DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;)&#xA;Dim dupDir As String = System.IO.Path.Combine(ProcessedDir, &quot;duplicates&quot;)&#xA;System.IO.Directory.CreateDirectory(dupDir)&#xA;Dim names As New System.Collections.Generic.List(Of String)()&#xA;For Each f As String In caseFiles&#xA;    names.Add(System.IO.Path.GetFileName(f))&#xA;    Try&#xA;        If System.IO.File.Exists(f) Then&#xA;            Dim dest As String = System.IO.Path.Combine(dupDir, DateTime.Now.ToString(&quot;yyyyMMddHHmmssfff&quot;) &amp; &quot;_&quot; &amp; System.IO.Path.GetFileName(f))&#xA;            System.IO.File.Move(f, dest)&#xA;        End If&#xA;    Catch mvEx As Exception&#xA;        LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; stamp &amp; &quot;] WARN could not move duplicate &quot; &amp; f &amp; &quot;: &quot; &amp; mvEx.Message &amp; Environment.NewLine&#xA;    End Try&#xA;Next&#xA;Dim joined As String = String.Join(&quot;; &quot;, names).Replace(&quot;&quot;&quot;&quot;, &quot;'&quot;)&#xA;ReportRows = ReportRows &amp; &quot;&quot;&quot;&quot; &amp; RunId &amp; &quot;&quot;&quot;,&quot;&quot;&quot; &amp; stamp &amp; &quot;&quot;&quot;,&quot;&quot;&quot; &amp; caseKey &amp; &quot;&quot;&quot;,&quot;&quot;&quot; &amp; joined &amp; &quot;&quot;&quot;,,,,,,,&quot;&quot;No&quot;&quot;,,,,&quot;&quot;Duplicate&quot;&quot;,&quot;&quot;Same content already imported within dedup window&quot;&quot;&quot; &amp; Environment.NewLine&#xA;LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; stamp &amp; &quot;] CASE &quot; &amp; caseKey &amp; &quot; -&gt; DUPLICATE skipped (hash &quot; &amp; caseHash.Substring(0, 10) &amp; &quot;...)&quot; &amp; Environment.NewLine&#xA;" DisplayName="Move duplicate + report row" sap2010:WorkflowViewState.IdRef="InvokeCode_14">
+<ui:InvokeCode.Arguments>
+<InArgument x:TypeArguments="s:String[]" x:Key="caseFiles">[caseFiles]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="ProcessedDir">[ProcessedDir]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="caseKey">[caseKey]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="caseHash">[caseHash]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="RunId">[RunId]</InArgument>
+<InOutArgument x:TypeArguments="x:Int32" x:Key="duplicateCount">[duplicateCount]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="ReportRows">[ReportRows]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="LogBuilderStr">[LogBuilderStr]</InOutArgument>
+</ui:InvokeCode.Arguments>
+</ui:InvokeCode>
+<ui:LogMessage DisplayName="Log duplicate" sap2010:WorkflowViewState.IdRef="LogMessage_15" Level="[UiPath.Core.Activities.LogLevel.Warn]" Message="[&quot;Duplicate skipped: &quot; &amp; caseKey]" />
+</Sequence>
+</If.Then>
+<If.Else>
+<Sequence DisplayName="New case - process" sap2010:WorkflowViewState.IdRef="Sequence_29">
+<sap:WorkflowViewStateService.ViewState>
+<scg:Dictionary x:TypeArguments="x:String, x:Object">
+<x:Boolean x:Key="IsExpanded">True</x:Boolean>
+</scg:Dictionary>
+</sap:WorkflowViewStateService.ViewState>
+<If Condition="[OpenAIEnabled AndAlso Not String.IsNullOrWhiteSpace(OpenAIApiKey)]" DisplayName="5b. LLM extraction with OpenAI (if key available)" sap2010:WorkflowViewState.IdRef="If_21">
+<If.Then>
+<Sequence DisplayName="OpenAI extract" sap2010:WorkflowViewState.IdRef="Sequence_19">
+<sap:WorkflowViewStateService.ViewState>
+<scg:Dictionary x:TypeArguments="x:String, x:Object">
+<x:Boolean x:Key="IsExpanded">True</x:Boolean>
+</scg:Dictionary>
+</sap:WorkflowViewStateService.ViewState>
+<ui:InvokeCode ContinueOnError="{x:Null}" Code="' Send all evidence of the case (text + images + PDFs) to OpenAI Chat Completions in JSON mode&#xA;' and get back one structured incident record. Retries on 429 / 5xx / network errors.&#xA;aiOk = False&#xA;aiError = &quot;&quot;&#xA;aiJson = &quot;&quot;&#xA;Dim stamp As String = &quot;[&quot; &amp; DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;) &amp; &quot;] &quot;&#xA;&#xA;Try&#xA;    Dim nl As String = vbLf&#xA;    Dim systemPrompt As String = &quot;You are an incident-intake analyst for DHL Customer Support (Asia Pacific). You receive raw, messy incident evidence: &quot; &amp;&#xA;        &quot;customer emails, WhatsApp or Teams chats, call-centre notes, handwritten warehouse notes, photos of damaged parcels and screenshots. &quot; &amp;&#xA;        &quot;Read ALL the evidence (text, images and PDFs) and return ONE JSON object that describes the incident. &quot; &amp;&#xA;        &quot;Use only facts present in the evidence. Never invent shipment numbers, names, emails or dates - use null when unknown.&quot; &amp; nl &amp; nl &amp;&#xA;        &quot;Return exactly these keys:&quot; &amp; nl &amp;&#xA;        &quot;shipment_id: string or null - the DHL shipment / tracking number exactly as written (e.g. MY987623400).&quot; &amp; nl &amp;&#xA;        &quot;title: string, max 100 characters, specific (e.g. &quot;&quot;Damaged coffee machine on MY987623400 - delivered late, no exception scan&quot;&quot;).&quot; &amp; nl &amp;&#xA;        &quot;primary_channel: one of Email, WhatsApp, Teams, Call Note, Handwritten Note, Image, Document, Other.&quot; &amp; nl &amp;&#xA;        &quot;reporter_name: string or null. reporter_email: string or null. reporter_phone: string or null.&quot; &amp; nl &amp;&#xA;        &quot;incident_date: YYYY-MM-DD or null.&quot; &amp; nl &amp;&#xA;        &quot;key_problem: one sentence stating the real underlying issue.&quot; &amp; nl &amp;&#xA;        &quot;clean_summary: 3 to 5 neutral sentences a supervisor can read in 20 seconds.&quot; &amp; nl &amp;&#xA;        &quot;category: one of Late Delivery, Damaged Parcel, Lost Parcel, Address Issue, Billing, System Issue, Customer Complaint, General.&quot; &amp; nl &amp;&#xA;        &quot;secondary_categories: array of other values from the same list that also apply (exclude category).&quot; &amp; nl &amp;&#xA;        &quot;department: one of Customer Support, Operations, Logistics Control, Warehouse, Claims &amp; Insurance, Finance, IT.&quot; &amp; nl &amp;&#xA;        &quot;priority: one of Low, Medium, High, Critical.&quot; &amp; nl &amp;&#xA;        &quot;priority_reason: one sentence.&quot; &amp; nl &amp;&#xA;        &quot;customer_sentiment: one of Calm, Frustrated, Angry, Escalation Threat.&quot; &amp; nl &amp;&#xA;        &quot;escalation_risk: boolean.&quot; &amp; nl &amp;&#xA;        &quot;issues_found: array of short strings (every distinct problem, e.g. late delivery, missing exception scan).&quot; &amp; nl &amp;&#xA;        &quot;missing_information: array of short strings (what an agent still needs to ask or find).&quot; &amp; nl &amp;&#xA;        &quot;recommended_actions: array of 2 to 5 short imperative next steps.&quot; &amp; nl &amp;&#xA;        &quot;timeline: array of objects {&quot;&quot;when&quot;&quot;: string or null, &quot;&quot;event&quot;&quot;: string} in chronological order.&quot; &amp; nl &amp;&#xA;        &quot;image_findings: string or null - what the photos or screenshots show; null when there are no images.&quot; &amp; nl &amp;&#xA;        &quot;confidence: number from 0 to 1 - your confidence in category, department and priority.&quot; &amp; nl &amp; nl &amp;&#xA;        &quot;Priority rules: Critical = safety risk, VIP or key account, legal / social-media / press threat together with damage or loss, or many customers affected. &quot; &amp;&#xA;        &quot;High = damaged, lost or significantly late shipment, or a customer demanding refund or replacement. &quot; &amp;&#xA;        &quot;Medium = billing questions, address changes, single delay without loss. Low = general enquiry.&quot; &amp; nl &amp;&#xA;        &quot;Department rules: refund or replacement claim for damage or loss -&gt; Claims &amp; Insurance; damage caused in handling or linehaul without a claim -&gt; Operations; &quot; &amp;&#xA;        &quot;lost parcels and missing scans -&gt; Logistics Control; hub, pallet or storage problems -&gt; Warehouse; invoices and payments only -&gt; Finance; &quot; &amp;&#xA;        &quot;portal, app or tracking system faults -&gt; IT; everything else -&gt; Customer Support.&quot; &amp; nl &amp;&#xA;        &quot;Respond with the JSON object only.&quot;&#xA;&#xA;    Dim evidence As String = If(rawText, &quot;&quot;)&#xA;    If evidence.Length &gt; 30000 Then&#xA;        evidence = evidence.Substring(0, 30000) &amp; vbLf &amp; &quot;[...truncated...]&quot;&#xA;    End If&#xA;    If evidence.Trim().Length = 0 Then&#xA;        evidence = &quot;(no text evidence - analyse the attached images / documents)&quot;&#xA;    End If&#xA;&#xA;    Dim imgList As String() = If(imageFiles, New String() {})&#xA;    Dim pdfList As String() = If(pdfFiles, New String() {})&#xA;&#xA;    Dim parts As New Newtonsoft.Json.Linq.JArray()&#xA;    Dim textPart As New Newtonsoft.Json.Linq.JObject()&#xA;    textPart.Add(&quot;type&quot;, New Newtonsoft.Json.Linq.JValue(&quot;text&quot;))&#xA;    textPart.Add(&quot;text&quot;, New Newtonsoft.Json.Linq.JValue(&quot;Case key: &quot; &amp; caseKey &amp; vbLf &amp; &quot;Attached images: &quot; &amp; imgList.Length.ToString() &amp; &quot;, PDFs: &quot; &amp; pdfList.Length.ToString() &amp; vbLf &amp; vbLf &amp; &quot;EVIDENCE TEXT:&quot; &amp; vbLf &amp; evidence))&#xA;    parts.Add(textPart)&#xA;&#xA;    Dim maxBytes As Long = CLng(MaxAttachmentMB) * 1024L * 1024L&#xA;    Dim imgUsed As Integer = 0&#xA;    For Each img As String In imgList&#xA;        If imgUsed &gt;= 8 Then&#xA;            Exit For&#xA;        End If&#xA;        Dim info As New System.IO.FileInfo(img)&#xA;        If info.Length &gt; maxBytes Then&#xA;            LogBuilderStr = LogBuilderStr &amp; stamp &amp; &quot;AI: skipped large image &quot; &amp; info.Name &amp; Environment.NewLine&#xA;            Continue For&#xA;        End If&#xA;        Dim ext As String = info.Extension.ToLowerInvariant()&#xA;        Dim mime As String = &quot;image/jpeg&quot;&#xA;        If ext = &quot;.png&quot; Then&#xA;            mime = &quot;image/png&quot;&#xA;        ElseIf ext = &quot;.webp&quot; Then&#xA;            mime = &quot;image/webp&quot;&#xA;        ElseIf ext = &quot;.gif&quot; Then&#xA;            mime = &quot;image/gif&quot;&#xA;        End If&#xA;        Dim imgObj As New Newtonsoft.Json.Linq.JObject()&#xA;        imgObj.Add(&quot;url&quot;, New Newtonsoft.Json.Linq.JValue(&quot;data:&quot; &amp; mime &amp; &quot;;base64,&quot; &amp; Convert.ToBase64String(System.IO.File.ReadAllBytes(img))))&#xA;        imgObj.Add(&quot;detail&quot;, New Newtonsoft.Json.Linq.JValue(&quot;high&quot;))&#xA;        Dim imgPart As New Newtonsoft.Json.Linq.JObject()&#xA;        imgPart.Add(&quot;type&quot;, New Newtonsoft.Json.Linq.JValue(&quot;image_url&quot;))&#xA;        imgPart.Add(&quot;image_url&quot;, imgObj)&#xA;        parts.Add(imgPart)&#xA;        imgUsed = imgUsed + 1&#xA;    Next&#xA;&#xA;    Dim pdfUsed As Integer = 0&#xA;    For Each pdf As String In pdfList&#xA;        If pdfUsed &gt;= 3 Then&#xA;            Exit For&#xA;        End If&#xA;        Dim pinfo As New System.IO.FileInfo(pdf)&#xA;        If pinfo.Length &gt; maxBytes Then&#xA;            LogBuilderStr = LogBuilderStr &amp; stamp &amp; &quot;AI: skipped large PDF &quot; &amp; pinfo.Name &amp; Environment.NewLine&#xA;            Continue For&#xA;        End If&#xA;        Dim fileObj As New Newtonsoft.Json.Linq.JObject()&#xA;        fileObj.Add(&quot;filename&quot;, New Newtonsoft.Json.Linq.JValue(pinfo.Name))&#xA;        fileObj.Add(&quot;file_data&quot;, New Newtonsoft.Json.Linq.JValue(&quot;data:application/pdf;base64,&quot; &amp; Convert.ToBase64String(System.IO.File.ReadAllBytes(pdf))))&#xA;        Dim pdfPart As New Newtonsoft.Json.Linq.JObject()&#xA;        pdfPart.Add(&quot;type&quot;, New Newtonsoft.Json.Linq.JValue(&quot;file&quot;))&#xA;        pdfPart.Add(&quot;file&quot;, fileObj)&#xA;        parts.Add(pdfPart)&#xA;        pdfUsed = pdfUsed + 1&#xA;    Next&#xA;&#xA;    Dim sysMsg As New Newtonsoft.Json.Linq.JObject()&#xA;    sysMsg.Add(&quot;role&quot;, New Newtonsoft.Json.Linq.JValue(&quot;system&quot;))&#xA;    sysMsg.Add(&quot;content&quot;, New Newtonsoft.Json.Linq.JValue(systemPrompt))&#xA;    Dim usrMsg As New Newtonsoft.Json.Linq.JObject()&#xA;    usrMsg.Add(&quot;role&quot;, New Newtonsoft.Json.Linq.JValue(&quot;user&quot;))&#xA;    usrMsg.Add(&quot;content&quot;, parts)&#xA;    Dim msgs As New Newtonsoft.Json.Linq.JArray()&#xA;    msgs.Add(sysMsg)&#xA;    msgs.Add(usrMsg)&#xA;&#xA;    Dim respFormat As New Newtonsoft.Json.Linq.JObject()&#xA;    respFormat.Add(&quot;type&quot;, New Newtonsoft.Json.Linq.JValue(&quot;json_object&quot;))&#xA;&#xA;    Dim req As New Newtonsoft.Json.Linq.JObject()&#xA;    req.Add(&quot;model&quot;, New Newtonsoft.Json.Linq.JValue(OpenAIModel))&#xA;    req.Add(&quot;temperature&quot;, New Newtonsoft.Json.Linq.JValue(0.1))&#xA;    req.Add(&quot;response_format&quot;, respFormat)&#xA;    req.Add(&quot;messages&quot;, msgs)&#xA;    Dim reqBody As String = req.ToString(Newtonsoft.Json.Formatting.None)&#xA;&#xA;    Dim respBody As String = &quot;&quot;&#xA;    Dim code As Integer = 0&#xA;    Using http As New System.Net.Http.HttpClient()&#xA;        http.Timeout = TimeSpan.FromSeconds(180)&#xA;        http.DefaultRequestHeaders.Authorization = New System.Net.Http.Headers.AuthenticationHeaderValue(&quot;Bearer&quot;, OpenAIApiKey)&#xA;        For attempt As Integer = 1 To 3&#xA;            Try&#xA;                Using reqContent As New System.Net.Http.StringContent(reqBody, System.Text.Encoding.UTF8, &quot;application/json&quot;)&#xA;                    Dim resp As System.Net.Http.HttpResponseMessage = http.PostAsync(OpenAIEndpoint, reqContent).Result&#xA;                    code = CInt(resp.StatusCode)&#xA;                    respBody = resp.Content.ReadAsStringAsync().Result&#xA;                End Using&#xA;            Catch netEx As Exception&#xA;                code = 0&#xA;                Dim inner As Exception = netEx&#xA;                While inner.InnerException IsNot Nothing&#xA;                    inner = inner.InnerException&#xA;                End While&#xA;                respBody = inner.Message&#xA;            End Try&#xA;            If code = 200 Then&#xA;                Exit For&#xA;            End If&#xA;            If code &lt;&gt; 0 AndAlso code &lt;&gt; 429 AndAlso code &lt; 500 Then&#xA;                Exit For&#xA;            End If&#xA;            LogBuilderStr = LogBuilderStr &amp; stamp &amp; &quot;AI: attempt &quot; &amp; attempt.ToString() &amp; &quot; failed (HTTP &quot; &amp; code.ToString() &amp; &quot;), retrying&quot; &amp; Environment.NewLine&#xA;            System.Threading.Thread.Sleep(attempt * 4000)&#xA;        Next&#xA;    End Using&#xA;&#xA;    If code = 200 Then&#xA;        Dim root As Newtonsoft.Json.Linq.JObject = Newtonsoft.Json.Linq.JObject.Parse(respBody)&#xA;        Dim contentTok As Newtonsoft.Json.Linq.JToken = root.SelectToken(&quot;choices[0].message.content&quot;)&#xA;        If contentTok Is Nothing OrElse contentTok.Type = Newtonsoft.Json.Linq.JTokenType.Null Then&#xA;            aiError = &quot;OpenAI returned no message content&quot;&#xA;        Else&#xA;            Dim txt As String = contentTok.ToString().Trim()&#xA;            If txt.StartsWith(&quot;```&quot;) Then&#xA;                txt = System.Text.RegularExpressions.Regex.Replace(txt, &quot;^```[a-zA-Z]*\s*|\s*```$&quot;, &quot;&quot;)&#xA;            End If&#xA;            Dim parsed As Newtonsoft.Json.Linq.JObject = Newtonsoft.Json.Linq.JObject.Parse(txt)&#xA;            aiJson = parsed.ToString(Newtonsoft.Json.Formatting.None)&#xA;            aiOk = True&#xA;            Dim usedTokens As String = &quot;&quot;&#xA;            Dim usageTok As Newtonsoft.Json.Linq.JToken = root.SelectToken(&quot;usage.total_tokens&quot;)&#xA;            If usageTok IsNot Nothing Then&#xA;                usedTokens = usageTok.ToString()&#xA;            End If&#xA;            LogBuilderStr = LogBuilderStr &amp; stamp &amp; &quot;AI: &quot; &amp; caseKey &amp; &quot; extracted OK (&quot; &amp; imgUsed.ToString() &amp; &quot; image(s), &quot; &amp; pdfUsed.ToString() &amp; &quot; PDF(s), tokens &quot; &amp; usedTokens &amp; &quot;)&quot; &amp; Environment.NewLine&#xA;        End If&#xA;    Else&#xA;        Dim shortBody As String = If(respBody, &quot;&quot;)&#xA;        If shortBody.Length &gt; 300 Then&#xA;            shortBody = shortBody.Substring(0, 300)&#xA;        End If&#xA;        aiError = &quot;OpenAI HTTP &quot; &amp; code.ToString() &amp; &quot;: &quot; &amp; shortBody&#xA;    End If&#xA;Catch ex As Exception&#xA;    aiOk = False&#xA;    aiError = &quot;OpenAI step error: &quot; &amp; ex.Message&#xA;End Try&#xA;&#xA;If Not aiOk Then&#xA;    LogBuilderStr = LogBuilderStr &amp; stamp &amp; &quot;AI: &quot; &amp; caseKey &amp; &quot; FALLBACK to rule-based triage - &quot; &amp; aiError &amp; Environment.NewLine&#xA;End If&#xA;" DisplayName="OpenAI - extract key problem, summary, classification" sap2010:WorkflowViewState.IdRef="InvokeCode_17">
+<ui:InvokeCode.Arguments>
+<InArgument x:TypeArguments="x:String" x:Key="OpenAIEndpoint">[OpenAIEndpoint]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="OpenAIApiKey">[OpenAIApiKey]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="OpenAIModel">[OpenAIModel]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="rawText">[rawText]</InArgument>
+<InArgument x:TypeArguments="s:String[]" x:Key="imageFiles">[imageFiles]</InArgument>
+<InArgument x:TypeArguments="s:String[]" x:Key="pdfFiles">[pdfFiles]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="caseKey">[caseKey]</InArgument>
+<InArgument x:TypeArguments="x:Int32" x:Key="MaxAttachmentMB">[MaxAttachmentMB]</InArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="aiJson">[aiJson]</InOutArgument>
+<InOutArgument x:TypeArguments="x:Boolean" x:Key="aiOk">[aiOk]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="aiError">[aiError]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="LogBuilderStr">[LogBuilderStr]</InOutArgument>
+</ui:InvokeCode.Arguments>
+</ui:InvokeCode>
+<ui:LogMessage DisplayName="Log AI result" sap2010:WorkflowViewState.IdRef="LogMessage_18" Level="[UiPath.Core.Activities.LogLevel.Info]" Message="[&quot;AI &quot; &amp; caseKey &amp; &quot;: &quot; &amp; If(aiOk, &quot;OK&quot;, &quot;fallback - &quot; &amp; aiError)]" />
+</Sequence>
+</If.Then>
+<If.Else>
+<Assign DisplayName="AI skipped" sap2010:WorkflowViewState.IdRef="Assign_20">
+<Assign.To>
+<OutArgument x:TypeArguments="x:String">[aiError]</OutArgument>
+</Assign.To>
+<Assign.Value>
+<InArgument x:TypeArguments="x:String">["OpenAI disabled or OPENAI_API_KEY not set"]</InArgument>
+</Assign.Value>
+</Assign>
+</If.Else>
+</If>
+<ui:InvokeCode ContinueOnError="{x:Null}" Code="' Merge the AI extraction with the raw evidence and build the JSON body for POST /api/rpa/import-bundle.&#xA;' Extra &quot;ai&quot; object carries the full structured extraction for the new backend / chatbot (ignored by older backends).&#xA;Dim nl As String = Environment.NewLine&#xA;Dim ai As Newtonsoft.Json.Linq.JObject = Nothing&#xA;If aiOk AndAlso Not String.IsNullOrWhiteSpace(aiJson) Then&#xA;    ai = Newtonsoft.Json.Linq.JObject.Parse(aiJson)&#xA;End If&#xA;&#xA;Dim GetS As Func(Of String, String) = Function(k As String) As String&#xA;                                          If ai Is Nothing Then&#xA;                                              Return &quot;&quot;&#xA;                                          End If&#xA;                                          Dim t As Newtonsoft.Json.Linq.JToken = ai(k)&#xA;                                          If t Is Nothing OrElse t.Type = Newtonsoft.Json.Linq.JTokenType.Null Then&#xA;                                              Return &quot;&quot;&#xA;                                          End If&#xA;                                          Return t.ToString().Trim()&#xA;                                      End Function&#xA;&#xA;Dim GetList As Func(Of String, System.Collections.Generic.List(Of String)) = Function(k As String) As System.Collections.Generic.List(Of String)&#xA;                                                                                 Dim result As New System.Collections.Generic.List(Of String)()&#xA;                                                                                 If ai Is Nothing Then&#xA;                                                                                     Return result&#xA;                                                                                 End If&#xA;                                                                                 Dim arr As Newtonsoft.Json.Linq.JArray = TryCast(ai(k), Newtonsoft.Json.Linq.JArray)&#xA;                                                                                 If arr Is Nothing Then&#xA;                                                                                     Return result&#xA;                                                                                 End If&#xA;                                                                                 For Each item As Newtonsoft.Json.Linq.JToken In arr&#xA;                                                                                     If item.Type = Newtonsoft.Json.Linq.JTokenType.Object Then&#xA;                                                                                         Dim w As String = If(item(&quot;when&quot;) Is Nothing OrElse item(&quot;when&quot;).Type = Newtonsoft.Json.Linq.JTokenType.Null, &quot;&quot;, item(&quot;when&quot;).ToString())&#xA;                                                                                         Dim ev As String = If(item(&quot;event&quot;) Is Nothing, item.ToString(Newtonsoft.Json.Formatting.None), item(&quot;event&quot;).ToString())&#xA;                                                                                         result.Add(If(w.Length &gt; 0, w &amp; &quot;: &quot;, &quot;&quot;) &amp; ev)&#xA;                                                                                     ElseIf item.Type &lt;&gt; Newtonsoft.Json.Linq.JTokenType.Null Then&#xA;                                                                                         result.Add(item.ToString().Trim())&#xA;                                                                                     End If&#xA;                                                                                 Next&#xA;                                                                                 Return result&#xA;                                                                             End Function&#xA;&#xA;Dim Pick As Func(Of String, String(), String, String) = Function(v As String, allowed As String(), dflt As String) As String&#xA;                                                            For Each a As String In allowed&#xA;                                                                If String.Equals(a, v.Trim(), StringComparison.OrdinalIgnoreCase) Then&#xA;                                                                    Return a&#xA;                                                                End If&#xA;                                                            Next&#xA;                                                            Return dflt&#xA;                                                        End Function&#xA;&#xA;Dim Trunc As Func(Of String, Integer, String) = Function(v As String, maxLen As Integer) As String&#xA;                                                    If v Is Nothing Then&#xA;                                                        Return &quot;&quot;&#xA;                                                    End If&#xA;                                                    If v.Length &gt; maxLen Then&#xA;                                                        Return v.Substring(0, maxLen)&#xA;                                                    End If&#xA;                                                    Return v&#xA;                                                End Function&#xA;&#xA;Dim JV As Func(Of String, Newtonsoft.Json.Linq.JToken) = Function(v As String) As Newtonsoft.Json.Linq.JToken&#xA;                                                             If String.IsNullOrWhiteSpace(v) Then&#xA;                                                                 Return Newtonsoft.Json.Linq.JValue.CreateNull()&#xA;                                                             End If&#xA;                                                             Return New Newtonsoft.Json.Linq.JValue(v)&#xA;                                                         End Function&#xA;&#xA;Dim BulletList As Func(Of System.Collections.Generic.List(Of String), String) = Function(lst As System.Collections.Generic.List(Of String)) As String&#xA;                                                                                    Dim b As New System.Text.StringBuilder()&#xA;                                                                                    For Each s As String In lst&#xA;                                                                                        b.Append(&quot;  - &quot;).Append(s).Append(Environment.NewLine)&#xA;                                                                                    Next&#xA;                                                                                    Return b.ToString()&#xA;                                                                                End Function&#xA;&#xA;Dim categories As String() = New String() {&quot;Late Delivery&quot;, &quot;Damaged Parcel&quot;, &quot;Lost Parcel&quot;, &quot;Address Issue&quot;, &quot;Billing&quot;, &quot;System Issue&quot;, &quot;Customer Complaint&quot;, &quot;General&quot;}&#xA;Dim departments As String() = New String() {&quot;Customer Support&quot;, &quot;Operations&quot;, &quot;Logistics Control&quot;, &quot;Warehouse&quot;, &quot;Claims &amp; Insurance&quot;, &quot;Finance&quot;, &quot;IT&quot;}&#xA;Dim priorities As String() = New String() {&quot;Low&quot;, &quot;Medium&quot;, &quot;High&quot;, &quot;Critical&quot;}&#xA;Dim channels As String() = New String() {&quot;Email&quot;, &quot;WhatsApp&quot;, &quot;Teams&quot;, &quot;Call Note&quot;, &quot;Handwritten Note&quot;, &quot;Image&quot;, &quot;Document&quot;, &quot;Other&quot;}&#xA;Dim evidence As String = If(rawText, &quot;&quot;)&#xA;&#xA;' ---- Shipment ID: AI value accepted when it appears in the text (or the case is image-only); else regex&#xA;Dim regexShip As String = &quot;&quot;&#xA;Try&#xA;    regexShip = System.Text.RegularExpressions.Regex.Match(evidence, ShipmentRegex, System.Text.RegularExpressions.RegexOptions.IgnoreCase).Value.ToUpperInvariant()&#xA;Catch rxEx As Exception&#xA;    regexShip = &quot;&quot;&#xA;End Try&#xA;Dim aiShip As String = GetS(&quot;shipment_id&quot;).Replace(&quot; &quot;, &quot;&quot;).ToUpperInvariant()&#xA;If aiShip.Length &gt; 0 AndAlso (evidence.ToUpperInvariant().Contains(aiShip) OrElse regexShip.Length = 0) Then&#xA;    finalShipment = aiShip&#xA;Else&#xA;    finalShipment = regexShip&#xA;End If&#xA;finalShipment = Trunc(finalShipment, 40)&#xA;&#xA;' ---- Title&#xA;finalTitle = GetS(&quot;title&quot;)&#xA;If finalTitle.Length = 0 Then&#xA;    Dim firstLine As String = &quot;&quot;&#xA;    For Each ln As String In evidence.Split(New Char() {ChrW(13), ChrW(10)}, StringSplitOptions.RemoveEmptyEntries)&#xA;        Dim t2 As String = ln.Trim()&#xA;        If t2.Length &gt; 0 AndAlso Not t2.StartsWith(&quot;=====&quot;) AndAlso Not t2.StartsWith(&quot;Channel:&quot;) AndAlso Not t2.StartsWith(&quot;From:&quot;) Then&#xA;            firstLine = t2&#xA;            Exit For&#xA;        End If&#xA;    Next&#xA;    finalTitle = If(firstLine.Length &gt; 0, firstLine, &quot;Incident &quot; &amp; caseKey)&#xA;End If&#xA;finalTitle = Trunc(finalTitle, 120)&#xA;&#xA;' ---- Classification (validated against allowed lists)&#xA;finalCategory = Pick(GetS(&quot;category&quot;), categories, &quot;General&quot;)&#xA;finalDepartment = Pick(GetS(&quot;department&quot;), departments, &quot;Customer Support&quot;)&#xA;finalPriority = Pick(GetS(&quot;priority&quot;), priorities, &quot;Medium&quot;)&#xA;Dim conf As Double = 0&#xA;Double.TryParse(GetS(&quot;confidence&quot;), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, conf)&#xA;If conf &lt; 0 Then&#xA;    conf = 0&#xA;End If&#xA;If conf &gt; 1 Then&#xA;    conf = 1&#xA;End If&#xA;finalConfidence = conf.ToString(&quot;0.00&quot;, System.Globalization.CultureInfo.InvariantCulture)&#xA;Dim primaryChannel As String = Pick(GetS(&quot;primary_channel&quot;), channels, &quot;Other&quot;)&#xA;&#xA;' ---- Reporter&#xA;Dim reporterName As String = Trunc(GetS(&quot;reporter_name&quot;), 120)&#xA;Dim reporterEmail As String = GetS(&quot;reporter_email&quot;)&#xA;Dim reporterPhone As String = GetS(&quot;reporter_phone&quot;)&#xA;If reporterEmail.Length = 0 Then&#xA;    Dim fm As System.Text.RegularExpressions.Match = System.Text.RegularExpressions.Regex.Match(evidence, &quot;From:\s*(?&lt;n&gt;[^&lt;\r\n]*)&lt;(?&lt;e&gt;[^&gt;\s]+@[^&gt;\s]+)&gt;&quot;)&#xA;    If fm.Success Then&#xA;        reporterEmail = fm.Groups(&quot;e&quot;).Value&#xA;        If reporterName.Length = 0 Then&#xA;            reporterName = Trunc(fm.Groups(&quot;n&quot;).Value.Trim(), 120)&#xA;        End If&#xA;    End If&#xA;End If&#xA;If Not System.Text.RegularExpressions.Regex.IsMatch(reporterEmail, &quot;^[^@\s]+@[^@\s]+\.[^@\s]+$&quot;) Then&#xA;    reporterEmail = &quot;&quot;&#xA;End If&#xA;reporterEmail = Trunc(reporterEmail, 180)&#xA;Dim fromContact As String = If(reporterEmail.Length &gt; 0, reporterEmail, reporterPhone)&#xA;&#xA;' ---- Readable AI block placed at the top of the first source body&#xA;Dim imageFindings As String = GetS(&quot;image_findings&quot;)&#xA;Dim aiBlock As New System.Text.StringBuilder()&#xA;If ai IsNot Nothing Then&#xA;    Dim secondary As System.Collections.Generic.List(Of String) = GetList(&quot;secondary_categories&quot;)&#xA;    aiBlock.Append(&quot;[AI EXTRACTION - OpenAI &quot;).Append(OpenAIModel).Append(&quot; | confidence &quot;).Append(finalConfidence).Append(&quot;]&quot;).Append(nl)&#xA;    aiBlock.Append(&quot;Key problem: &quot;).Append(GetS(&quot;key_problem&quot;)).Append(nl)&#xA;    aiBlock.Append(&quot;Summary: &quot;).Append(GetS(&quot;clean_summary&quot;)).Append(nl)&#xA;    aiBlock.Append(&quot;Category: &quot;).Append(finalCategory)&#xA;    If secondary.Count &gt; 0 Then&#xA;        aiBlock.Append(&quot; (also: &quot;).Append(String.Join(&quot;, &quot;, secondary)).Append(&quot;)&quot;)&#xA;    End If&#xA;    aiBlock.Append(nl)&#xA;    aiBlock.Append(&quot;Department: &quot;).Append(finalDepartment).Append(nl)&#xA;    aiBlock.Append(&quot;Priority: &quot;).Append(finalPriority).Append(&quot; - &quot;).Append(GetS(&quot;priority_reason&quot;)).Append(nl)&#xA;    aiBlock.Append(&quot;Customer sentiment: &quot;).Append(GetS(&quot;customer_sentiment&quot;)).Append(&quot; | Escalation risk: &quot;).Append(If(GetS(&quot;escalation_risk&quot;).ToLowerInvariant() = &quot;true&quot;, &quot;YES&quot;, &quot;no&quot;)).Append(nl)&#xA;    If GetList(&quot;issues_found&quot;).Count &gt; 0 Then&#xA;        aiBlock.Append(&quot;Issues found:&quot;).Append(nl).Append(BulletList(GetList(&quot;issues_found&quot;)))&#xA;    End If&#xA;    If GetList(&quot;missing_information&quot;).Count &gt; 0 Then&#xA;        aiBlock.Append(&quot;Missing information:&quot;).Append(nl).Append(BulletList(GetList(&quot;missing_information&quot;)))&#xA;    End If&#xA;    If GetList(&quot;recommended_actions&quot;).Count &gt; 0 Then&#xA;        aiBlock.Append(&quot;Recommended actions:&quot;).Append(nl).Append(BulletList(GetList(&quot;recommended_actions&quot;)))&#xA;    End If&#xA;    If GetList(&quot;timeline&quot;).Count &gt; 0 Then&#xA;        aiBlock.Append(&quot;Timeline:&quot;).Append(nl).Append(BulletList(GetList(&quot;timeline&quot;)))&#xA;    End If&#xA;    If imageFindings.Length &gt; 0 Then&#xA;        aiBlock.Append(&quot;Image findings: &quot;).Append(imageFindings).Append(nl)&#xA;    End If&#xA;    aiBlock.Append(nl).Append(&quot;----- ORIGINAL EVIDENCE -----&quot;).Append(nl)&#xA;Else&#xA;    aiBlock.Append(&quot;[AI extraction unavailable - classified by backend rules]&quot;).Append(nl).Append(nl)&#xA;End If&#xA;&#xA;' ---- Sources (one per file)&#xA;Dim srcIn As Newtonsoft.Json.Linq.JArray = Newtonsoft.Json.Linq.JArray.Parse(sourcesJson)&#xA;Dim sources As New Newtonsoft.Json.Linq.JArray()&#xA;Dim textSourceCount As Integer = 0&#xA;For Each tok As Newtonsoft.Json.Linq.JToken In srcIn&#xA;    If tok(&quot;kind&quot;).ToString() = &quot;text&quot; OrElse tok(&quot;kind&quot;).ToString() = &quot;document&quot; Then&#xA;        textSourceCount = textSourceCount + 1&#xA;    End If&#xA;Next&#xA;&#xA;Dim isFirst As Boolean = True&#xA;For Each tok As Newtonsoft.Json.Linq.JToken In srcIn&#xA;    Dim fileNm As String = tok(&quot;file&quot;).ToString()&#xA;    Dim kind As String = tok(&quot;kind&quot;).ToString()&#xA;    Dim ch As String = tok(&quot;channel&quot;).ToString()&#xA;    Dim body As String = tok(&quot;text&quot;).ToString()&#xA;    If ch = &quot;Upload&quot; Then&#xA;        ch = If(textSourceCount = 1 AndAlso primaryChannel &lt;&gt; &quot;Other&quot;, primaryChannel, &quot;Upload&quot;)&#xA;    End If&#xA;    If kind = &quot;image&quot; Then&#xA;        body = &quot;[Image evidence: &quot; &amp; fileNm &amp; &quot;]&quot;&#xA;        If imageFindings.Length &gt; 0 Then&#xA;            body = body &amp; nl &amp; &quot;AI image findings: &quot; &amp; imageFindings&#xA;        End If&#xA;    ElseIf kind = &quot;pdf&quot; Then&#xA;        body = &quot;[PDF document: &quot; &amp; fileNm &amp; &quot;]&quot; &amp; If(ai IsNot Nothing, &quot; - content read by AI, see summary above.&quot;, &quot;&quot;)&#xA;    ElseIf kind = &quot;unsupported&quot; Then&#xA;        body = &quot;[Unsupported file type: &quot; &amp; fileNm &amp; &quot;]&quot;&#xA;    End If&#xA;    If isFirst Then&#xA;        body = aiBlock.ToString() &amp; body&#xA;        isFirst = False&#xA;    End If&#xA;    If String.IsNullOrWhiteSpace(body) Then&#xA;        body = &quot;(empty file: &quot; &amp; fileNm &amp; &quot;)&quot;&#xA;    End If&#xA;&#xA;    Dim o As New Newtonsoft.Json.Linq.JObject()&#xA;    o.Add(&quot;channel&quot;, New Newtonsoft.Json.Linq.JValue(Trunc(ch, 60)))&#xA;    o.Add(&quot;subject&quot;, New Newtonsoft.Json.Linq.JValue(Trunc(finalTitle, 250)))&#xA;    o.Add(&quot;body&quot;, New Newtonsoft.Json.Linq.JValue(body))&#xA;    o.Add(&quot;fromName&quot;, JV(Trunc(reporterName, 150)))&#xA;    o.Add(&quot;fromContact&quot;, JV(Trunc(fromContact, 180)))&#xA;    o.Add(&quot;sourceTimestamp&quot;, JV(tok(&quot;timestamp&quot;).ToString()))&#xA;    o.Add(&quot;attachmentName&quot;, JV(Trunc(fileNm, 255)))&#xA;    o.Add(&quot;externalReference&quot;, JV(Trunc(caseKey &amp; &quot;/&quot; &amp; fileNm, 180)))&#xA;    sources.Add(o)&#xA;Next&#xA;&#xA;' ---- Structured AI object (for the new backend, dashboard and chatbot)&#xA;Dim aiObj As New Newtonsoft.Json.Linq.JObject()&#xA;aiObj.Add(&quot;provider&quot;, New Newtonsoft.Json.Linq.JValue(&quot;OpenAI&quot;))&#xA;aiObj.Add(&quot;model&quot;, New Newtonsoft.Json.Linq.JValue(OpenAIModel))&#xA;aiObj.Add(&quot;used&quot;, New Newtonsoft.Json.Linq.JValue(ai IsNot Nothing))&#xA;aiObj.Add(&quot;keyProblem&quot;, JV(GetS(&quot;key_problem&quot;)))&#xA;aiObj.Add(&quot;cleanSummary&quot;, JV(GetS(&quot;clean_summary&quot;)))&#xA;aiObj.Add(&quot;category&quot;, New Newtonsoft.Json.Linq.JValue(finalCategory))&#xA;aiObj.Add(&quot;secondaryCategories&quot;, New Newtonsoft.Json.Linq.JArray(GetList(&quot;secondary_categories&quot;).ToArray()))&#xA;aiObj.Add(&quot;department&quot;, New Newtonsoft.Json.Linq.JValue(finalDepartment))&#xA;aiObj.Add(&quot;priority&quot;, New Newtonsoft.Json.Linq.JValue(finalPriority))&#xA;aiObj.Add(&quot;priorityReason&quot;, JV(GetS(&quot;priority_reason&quot;)))&#xA;aiObj.Add(&quot;primaryChannel&quot;, New Newtonsoft.Json.Linq.JValue(primaryChannel))&#xA;aiObj.Add(&quot;customerSentiment&quot;, JV(GetS(&quot;customer_sentiment&quot;)))&#xA;aiObj.Add(&quot;escalationRisk&quot;, New Newtonsoft.Json.Linq.JValue(GetS(&quot;escalation_risk&quot;).ToLowerInvariant() = &quot;true&quot;))&#xA;aiObj.Add(&quot;issuesFound&quot;, New Newtonsoft.Json.Linq.JArray(GetList(&quot;issues_found&quot;).ToArray()))&#xA;aiObj.Add(&quot;missingInformation&quot;, New Newtonsoft.Json.Linq.JArray(GetList(&quot;missing_information&quot;).ToArray()))&#xA;aiObj.Add(&quot;recommendedActions&quot;, New Newtonsoft.Json.Linq.JArray(GetList(&quot;recommended_actions&quot;).ToArray()))&#xA;aiObj.Add(&quot;timeline&quot;, New Newtonsoft.Json.Linq.JArray(GetList(&quot;timeline&quot;).ToArray()))&#xA;aiObj.Add(&quot;imageFindings&quot;, JV(imageFindings))&#xA;aiObj.Add(&quot;incidentDate&quot;, JV(GetS(&quot;incident_date&quot;)))&#xA;aiObj.Add(&quot;reporterPhone&quot;, JV(reporterPhone))&#xA;aiObj.Add(&quot;confidence&quot;, New Newtonsoft.Json.Linq.JValue(conf))&#xA;aiObj.Add(&quot;error&quot;, JV(aiError))&#xA;&#xA;Dim payload As New Newtonsoft.Json.Linq.JObject()&#xA;payload.Add(&quot;shipmentId&quot;, JV(finalShipment))&#xA;payload.Add(&quot;title&quot;, New Newtonsoft.Json.Linq.JValue(Trunc(finalTitle, 180)))&#xA;payload.Add(&quot;sources&quot;, sources)&#xA;payload.Add(&quot;reporterName&quot;, JV(reporterName))&#xA;payload.Add(&quot;reporterEmail&quot;, JV(reporterEmail))&#xA;payload.Add(&quot;externalReference&quot;, New Newtonsoft.Json.Linq.JValue(Trunc(&quot;UIPATH-&quot; &amp; RunId &amp; &quot;-&quot; &amp; caseKey, 180)))&#xA;payload.Add(&quot;ai&quot;, aiObj)&#xA;payloadJson = payload.ToString(Newtonsoft.Json.Formatting.None)&#xA;&#xA;If ai IsNot Nothing Then&#xA;    statusNote = Trunc(&quot;UiPath + OpenAI triage: &quot; &amp; finalCategory &amp; &quot; -&gt; &quot; &amp; finalDepartment &amp; &quot;, priority &quot; &amp; finalPriority &amp; &quot; (confidence &quot; &amp; finalConfidence &amp; &quot;)&quot;, 200)&#xA;Else&#xA;    statusNote = &quot;UiPath import - AI unavailable, rule-based triage by backend&quot;&#xA;End If&#xA;" DisplayName="5c. Build incident bundle (AI + raw evidence)" sap2010:WorkflowViewState.IdRef="InvokeCode_22">
+<ui:InvokeCode.Arguments>
+<InArgument x:TypeArguments="x:String" x:Key="aiJson">[aiJson]</InArgument>
+<InArgument x:TypeArguments="x:Boolean" x:Key="aiOk">[aiOk]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="aiError">[aiError]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="rawText">[rawText]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="sourcesJson">[sourcesJson]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="caseKey">[caseKey]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="RunId">[RunId]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="ShipmentRegex">[ShipmentRegex]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="OpenAIModel">[OpenAIModel]</InArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="payloadJson">[payloadJson]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="finalTitle">[finalTitle]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="finalShipment">[finalShipment]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="finalCategory">[finalCategory]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="finalDepartment">[finalDepartment]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="finalPriority">[finalPriority]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="finalConfidence">[finalConfidence]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="statusNote">[statusNote]</InOutArgument>
+</ui:InvokeCode.Arguments>
+</ui:InvokeCode>
+<ui:InvokeCode ContinueOnError="{x:Null}" Code="' POST the bundle to the web app. Retries 3x on network errors and 5xx.&#xA;responseText = &quot;&quot;&#xA;httpStatus = 0&#xA;Dim url As String = ApiBaseUrl.TrimEnd(&quot;/&quot;c) &amp; BundlePath&#xA;Using http As New System.Net.Http.HttpClient()&#xA;    http.Timeout = TimeSpan.FromSeconds(60)&#xA;    http.DefaultRequestHeaders.Add(&quot;X-Api-Key&quot;, ApiKey)&#xA;    For attempt As Integer = 1 To 3&#xA;        Try&#xA;            Using body As New System.Net.Http.StringContent(payloadJson, System.Text.Encoding.UTF8, &quot;application/json&quot;)&#xA;                Dim resp As System.Net.Http.HttpResponseMessage = http.PostAsync(url, body).Result&#xA;                httpStatus = CInt(resp.StatusCode)&#xA;                responseText = resp.Content.ReadAsStringAsync().Result&#xA;            End Using&#xA;        Catch ex As Exception&#xA;            httpStatus = 0&#xA;            Dim inner As Exception = ex&#xA;            While inner.InnerException IsNot Nothing&#xA;                inner = inner.InnerException&#xA;            End While&#xA;            responseText = &quot;{&quot;&quot;ok&quot;&quot;:false,&quot;&quot;message&quot;&quot;:&quot; &amp; Newtonsoft.Json.JsonConvert.ToString(inner.Message) &amp; &quot;}&quot;&#xA;        End Try&#xA;        If httpStatus &lt;&gt; 0 AndAlso httpStatus &lt; 500 Then&#xA;            Exit For&#xA;        End If&#xA;        System.Threading.Thread.Sleep(attempt * 3000)&#xA;    Next&#xA;End Using&#xA;" DisplayName="5d. Update website - POST /api/rpa/import-bundle" sap2010:WorkflowViewState.IdRef="InvokeCode_23">
+<ui:InvokeCode.Arguments>
+<InArgument x:TypeArguments="x:String" x:Key="ApiBaseUrl">[ApiBaseUrl]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="BundlePath">[BundlePath]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="ApiKey">[ApiKey]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="payloadJson">[payloadJson]</InArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="responseText">[responseText]</InOutArgument>
+<InOutArgument x:TypeArguments="x:Int32" x:Key="httpStatus">[httpStatus]</InOutArgument>
+</ui:InvokeCode.Arguments>
+</ui:InvokeCode>
+<ui:InvokeCode ContinueOnError="{x:Null}" Code="' Read the backend reply: incident code, merged-or-created, errors.&#xA;incidentCode = &quot;&quot;&#xA;mergedFlag = False&#xA;caseResult = &quot;Failed&quot;&#xA;caseError = &quot;&quot;&#xA;Try&#xA;    Dim resp As Newtonsoft.Json.Linq.JObject = Newtonsoft.Json.Linq.JObject.Parse(If(responseText, &quot;{}&quot;))&#xA;    Dim okTok As Newtonsoft.Json.Linq.JToken = resp(&quot;ok&quot;)&#xA;    Dim isOk As Boolean = okTok IsNot Nothing AndAlso okTok.Type = Newtonsoft.Json.Linq.JTokenType.Boolean AndAlso okTok.ToObject(Of Boolean)()&#xA;    If resp(&quot;incidentCode&quot;) IsNot Nothing Then&#xA;        incidentCode = resp(&quot;incidentCode&quot;).ToString()&#xA;    End If&#xA;    If resp(&quot;merged&quot;) IsNot Nothing AndAlso resp(&quot;merged&quot;).Type = Newtonsoft.Json.Linq.JTokenType.Boolean Then&#xA;        mergedFlag = resp(&quot;merged&quot;).ToObject(Of Boolean)()&#xA;    End If&#xA;    If isOk AndAlso httpStatus &gt;= 200 AndAlso httpStatus &lt; 300 Then&#xA;        If mergedFlag Then&#xA;            mergedCount = mergedCount + 1&#xA;            caseResult = &quot;Merged&quot;&#xA;        Else&#xA;            createdCount = createdCount + 1&#xA;            caseResult = &quot;Created&quot;&#xA;        End If&#xA;    Else&#xA;        Dim msgText As String = &quot;&quot;&#xA;        If resp(&quot;message&quot;) IsNot Nothing Then&#xA;            msgText = resp(&quot;message&quot;).ToString()&#xA;        ElseIf resp(&quot;errors&quot;) IsNot Nothing Then&#xA;            msgText = resp(&quot;errors&quot;).ToString(Newtonsoft.Json.Formatting.None)&#xA;        ElseIf resp(&quot;title&quot;) IsNot Nothing Then&#xA;            msgText = resp(&quot;title&quot;).ToString()&#xA;        End If&#xA;        caseError = &quot;HTTP &quot; &amp; httpStatus.ToString() &amp; &quot; &quot; &amp; msgText&#xA;    End If&#xA;Catch ex As Exception&#xA;    Dim shortResp As String = If(responseText, &quot;&quot;)&#xA;    If shortResp.Length &gt; 200 Then&#xA;        shortResp = shortResp.Substring(0, 200)&#xA;    End If&#xA;    caseError = &quot;HTTP &quot; &amp; httpStatus.ToString() &amp; &quot; unreadable response: &quot; &amp; shortResp&#xA;End Try&#xA;If caseError.Length &gt; 400 Then&#xA;    caseError = caseError.Substring(0, 400)&#xA;End If&#xA;" DisplayName="5e. Parse backend response" sap2010:WorkflowViewState.IdRef="InvokeCode_24">
+<ui:InvokeCode.Arguments>
+<InArgument x:TypeArguments="x:String" x:Key="responseText">[responseText]</InArgument>
+<InArgument x:TypeArguments="x:Int32" x:Key="httpStatus">[httpStatus]</InArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="incidentCode">[incidentCode]</InOutArgument>
+<InOutArgument x:TypeArguments="x:Boolean" x:Key="mergedFlag">[mergedFlag]</InOutArgument>
+<InOutArgument x:TypeArguments="x:Int32" x:Key="createdCount">[createdCount]</InOutArgument>
+<InOutArgument x:TypeArguments="x:Int32" x:Key="mergedCount">[mergedCount]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="caseResult">[caseResult]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="caseError">[caseError]</InOutArgument>
+</ui:InvokeCode.Arguments>
+</ui:InvokeCode>
+<If Condition="[Not String.IsNullOrWhiteSpace(incidentCode) AndAlso Not String.IsNullOrWhiteSpace(AutoStatus)]" DisplayName="5f. Update incident status (workflow)" sap2010:WorkflowViewState.IdRef="If_26">
+<If.Then>
+<ui:InvokeCode ContinueOnError="{x:Null}" Code="' Move the incident along the workflow (New -&gt; Triaged by default) so the website shows the bot's progress.&#xA;statusHttp = 0&#xA;Try&#xA;    Dim bodyObj As New Newtonsoft.Json.Linq.JObject()&#xA;    bodyObj.Add(&quot;incidentCode&quot;, New Newtonsoft.Json.Linq.JValue(incidentCode))&#xA;    bodyObj.Add(&quot;newStatus&quot;, New Newtonsoft.Json.Linq.JValue(AutoStatus))&#xA;    bodyObj.Add(&quot;note&quot;, New Newtonsoft.Json.Linq.JValue(statusNote))&#xA;    Using http As New System.Net.Http.HttpClient()&#xA;        http.Timeout = TimeSpan.FromSeconds(30)&#xA;        http.DefaultRequestHeaders.Add(&quot;X-Api-Key&quot;, ApiKey)&#xA;        Using req As New System.Net.Http.HttpRequestMessage(New System.Net.Http.HttpMethod(&quot;PATCH&quot;), ApiBaseUrl.TrimEnd(&quot;/&quot;c) &amp; StatusPath)&#xA;            req.Content = New System.Net.Http.StringContent(bodyObj.ToString(Newtonsoft.Json.Formatting.None), System.Text.Encoding.UTF8, &quot;application/json&quot;)&#xA;            Dim resp As System.Net.Http.HttpResponseMessage = http.SendAsync(req).Result&#xA;            statusHttp = CInt(resp.StatusCode)&#xA;        End Using&#xA;    End Using&#xA;    LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;) &amp; &quot;] Status &quot; &amp; incidentCode &amp; &quot; -&gt; &quot; &amp; AutoStatus &amp; &quot; (HTTP &quot; &amp; statusHttp.ToString() &amp; &quot;)&quot; &amp; Environment.NewLine&#xA;Catch ex As Exception&#xA;    LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;) &amp; &quot;] WARN status update failed for &quot; &amp; incidentCode &amp; &quot;: &quot; &amp; ex.Message &amp; Environment.NewLine&#xA;End Try&#xA;" DisplayName="PATCH /api/rpa/status" sap2010:WorkflowViewState.IdRef="InvokeCode_25">
+<ui:InvokeCode.Arguments>
+<InArgument x:TypeArguments="x:String" x:Key="ApiBaseUrl">[ApiBaseUrl]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="StatusPath">[StatusPath]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="ApiKey">[ApiKey]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="incidentCode">[incidentCode]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="AutoStatus">[AutoStatus]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="statusNote">[statusNote]</InArgument>
+<InOutArgument x:TypeArguments="x:Int32" x:Key="statusHttp">[statusHttp]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="LogBuilderStr">[LogBuilderStr]</InOutArgument>
+</ui:InvokeCode.Arguments>
+</ui:InvokeCode>
+</If.Then>
+</If>
+<ui:InvokeCode ContinueOnError="{x:Null}" Code="' Record the hash, add a report row, and move the case files out of Incoming&#xA;' (_processed\&lt;date&gt; on success, _failed on failure so they can be fixed and dropped back in).&#xA;Dim Q As Func(Of String, String) = Function(v As String) As String&#xA;                                       Return &quot;&quot;&quot;&quot; &amp; If(v, &quot;&quot;).Replace(&quot;&quot;&quot;&quot;, &quot;&quot;&quot;&quot;&quot;&quot;).Replace(vbCr, &quot; &quot;).Replace(vbLf, &quot; &quot;) &amp; &quot;&quot;&quot;&quot;&#xA;                                   End Function&#xA;Dim stamp As String = DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;)&#xA;Dim success As Boolean = Not String.IsNullOrWhiteSpace(incidentCode) AndAlso (caseResult = &quot;Created&quot; OrElse caseResult = &quot;Merged&quot;)&#xA;&#xA;If aiOk Then&#xA;    aiSuccessCount = aiSuccessCount + 1&#xA;Else&#xA;    aiFallbackCount = aiFallbackCount + 1&#xA;End If&#xA;&#xA;Dim targetDir As String&#xA;If success Then&#xA;    System.IO.File.AppendAllText(HashLogFile, caseHash &amp; &quot;,&quot; &amp; DateTime.UtcNow.ToString(&quot;o&quot;) &amp; &quot;,&quot; &amp; caseKey &amp; &quot;,&quot; &amp; incidentCode &amp; Environment.NewLine)&#xA;    targetDir = System.IO.Path.Combine(ProcessedDir, DateTime.Now.ToString(&quot;yyyy-MM-dd&quot;))&#xA;Else&#xA;    failedCount = failedCount + 1&#xA;    targetDir = FailedDir&#xA;End If&#xA;System.IO.Directory.CreateDirectory(targetDir)&#xA;&#xA;Dim names As New System.Collections.Generic.List(Of String)()&#xA;For Each f As String In caseFiles&#xA;    names.Add(System.IO.Path.GetFileName(f))&#xA;    Try&#xA;        If System.IO.File.Exists(f) Then&#xA;            Dim dest As String = System.IO.Path.Combine(targetDir, System.IO.Path.GetFileName(f))&#xA;            If System.IO.File.Exists(dest) Then&#xA;                dest = System.IO.Path.Combine(targetDir, System.IO.Path.GetFileNameWithoutExtension(f) &amp; &quot;_&quot; &amp; DateTime.Now.ToString(&quot;HHmmssfff&quot;) &amp; System.IO.Path.GetExtension(f))&#xA;            End If&#xA;            System.IO.File.Move(f, dest)&#xA;        End If&#xA;    Catch mvEx As Exception&#xA;        LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; stamp &amp; &quot;] WARN could not move &quot; &amp; f &amp; &quot;: &quot; &amp; mvEx.Message &amp; Environment.NewLine&#xA;    End Try&#xA;Next&#xA;&#xA;Dim errText As String = If(caseError, &quot;&quot;)&#xA;If Not aiOk AndAlso Not String.IsNullOrWhiteSpace(aiError) Then&#xA;    errText = (errText &amp; &quot; | AI: &quot; &amp; aiError).Trim(&quot; &quot;c, &quot;|&quot;c)&#xA;End If&#xA;&#xA;ReportRows = ReportRows &amp; String.Join(&quot;,&quot;, New String() {&#xA;    Q(RunId), Q(stamp), Q(caseKey), Q(String.Join(&quot;; &quot;, names)), Q(finalShipment), Q(finalTitle),&#xA;    Q(finalCategory), Q(finalDepartment), Q(finalPriority), Q(finalConfidence), Q(If(aiOk, &quot;Yes&quot;, &quot;No&quot;)),&#xA;    Q(incidentCode), Q(If(mergedFlag, &quot;Yes&quot;, &quot;No&quot;)), Q(httpStatus.ToString()), Q(caseResult), Q(errText)}) &amp; Environment.NewLine&#xA;&#xA;LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; stamp &amp; &quot;] CASE &quot; &amp; caseKey &amp; &quot; -&gt; &quot; &amp; caseResult &amp;&#xA;                If(incidentCode.Length &gt; 0, &quot; &quot; &amp; incidentCode, &quot;&quot;) &amp;&#xA;                &quot; | &quot; &amp; finalCategory &amp; &quot; / &quot; &amp; finalDepartment &amp; &quot; / &quot; &amp; finalPriority &amp;&#xA;                &quot; | shipment &quot; &amp; If(finalShipment.Length &gt; 0, finalShipment, &quot;-&quot;) &amp;&#xA;                If(errText.Length &gt; 0, &quot; | &quot; &amp; errText, &quot;&quot;) &amp; Environment.NewLine&#xA;" DisplayName="5g. Record hash, report row, move files" sap2010:WorkflowViewState.IdRef="InvokeCode_27">
+<ui:InvokeCode.Arguments>
+<InArgument x:TypeArguments="s:String[]" x:Key="caseFiles">[caseFiles]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="ProcessedDir">[ProcessedDir]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="FailedDir">[FailedDir]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="HashLogFile">[HashLogFile]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="caseHash">[caseHash]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="caseKey">[caseKey]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="RunId">[RunId]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="incidentCode">[incidentCode]</InArgument>
+<InArgument x:TypeArguments="x:Boolean" x:Key="mergedFlag">[mergedFlag]</InArgument>
+<InArgument x:TypeArguments="x:Int32" x:Key="httpStatus">[httpStatus]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="finalShipment">[finalShipment]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="finalTitle">[finalTitle]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="finalCategory">[finalCategory]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="finalDepartment">[finalDepartment]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="finalPriority">[finalPriority]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="finalConfidence">[finalConfidence]</InArgument>
+<InArgument x:TypeArguments="x:Boolean" x:Key="aiOk">[aiOk]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="aiError">[aiError]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="caseResult">[caseResult]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="caseError">[caseError]</InArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="ReportRows">[ReportRows]</InOutArgument>
+<InOutArgument x:TypeArguments="x:Int32" x:Key="aiSuccessCount">[aiSuccessCount]</InOutArgument>
+<InOutArgument x:TypeArguments="x:Int32" x:Key="aiFallbackCount">[aiFallbackCount]</InOutArgument>
+<InOutArgument x:TypeArguments="x:Int32" x:Key="failedCount">[failedCount]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="LogBuilderStr">[LogBuilderStr]</InOutArgument>
+</ui:InvokeCode.Arguments>
+</ui:InvokeCode>
+<ui:LogMessage DisplayName="Log case result" sap2010:WorkflowViewState.IdRef="LogMessage_28" Level="[UiPath.Core.Activities.LogLevel.Info]" Message="[&quot;Case &quot; &amp; caseKey &amp; &quot; -&gt; &quot; &amp; caseResult &amp; &quot; &quot; &amp; incidentCode &amp; &quot; | &quot; &amp; finalCategory &amp; &quot; / &quot; &amp; finalDepartment &amp; &quot; / &quot; &amp; finalPriority &amp; &quot; (AI &quot; &amp; If(aiOk, &quot;yes&quot;, &quot;no&quot;) &amp; &quot;)&quot;]" />
+</Sequence>
+</If.Else>
+</If>
+</Sequence>
+</TryCatch.Try>
+<TryCatch.Catches>
+<Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch_36">
+<ActivityAction x:TypeArguments="s:Exception">
+<ActivityAction.Argument>
+<DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+</ActivityAction.Argument>
+<Sequence DisplayName="Catch" sap2010:WorkflowViewState.IdRef="Sequence_34">
+<sap:WorkflowViewStateService.ViewState>
+<scg:Dictionary x:TypeArguments="x:String, x:Object">
+<x:Boolean x:Key="IsExpanded">True</x:Boolean>
+</scg:Dictionary>
+</sap:WorkflowViewStateService.ViewState>
+<ui:InvokeCode ContinueOnError="{x:Null}" Code="' Unexpected error on one case: count it, log it, save a screenshot, move the files to _failed and keep going.&#xA;failedCount = failedCount + 1&#xA;Dim stamp As String = DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;)&#xA;Dim fileStamp As String = DateTime.Now.ToString(&quot;yyyyMMdd_HHmmss_fff&quot;)&#xA;LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; stamp &amp; &quot;] ERROR case &quot; &amp; caseKey &amp; &quot;: &quot; &amp; caughtEx.Message &amp; Environment.NewLine&#xA;&#xA;Dim names As New System.Collections.Generic.List(Of String)()&#xA;If caseFiles IsNot Nothing Then&#xA;    For Each f As String In caseFiles&#xA;        names.Add(System.IO.Path.GetFileName(f))&#xA;        Try&#xA;            If System.IO.File.Exists(f) Then&#xA;                System.IO.File.Move(f, System.IO.Path.Combine(FailedDir, fileStamp &amp; &quot;_&quot; &amp; System.IO.Path.GetFileName(f)))&#xA;            End If&#xA;        Catch mvEx As Exception&#xA;        End Try&#xA;    Next&#xA;End If&#xA;&#xA;Try&#xA;    System.IO.File.WriteAllText(System.IO.Path.Combine(FailedDir, &quot;error_&quot; &amp; fileStamp &amp; &quot;.txt&quot;),&#xA;        &quot;Case: &quot; &amp; caseKey &amp; Environment.NewLine &amp; &quot;Files: &quot; &amp; String.Join(&quot;; &quot;, names) &amp; Environment.NewLine &amp;&#xA;        &quot;Error: &quot; &amp; caughtEx.Message &amp; Environment.NewLine &amp; &quot;Stack: &quot; &amp; caughtEx.StackTrace)&#xA;    Dim bounds As System.Drawing.Rectangle = System.Windows.Forms.Screen.PrimaryScreen.Bounds&#xA;    Using bmp As New System.Drawing.Bitmap(bounds.Width, bounds.Height)&#xA;        Using g As System.Drawing.Graphics = System.Drawing.Graphics.FromImage(bmp)&#xA;            g.CopyFromScreen(System.Drawing.Point.Empty, System.Drawing.Point.Empty, bounds.Size)&#xA;        End Using&#xA;        bmp.Save(System.IO.Path.Combine(FailedDir, &quot;error_&quot; &amp; fileStamp &amp; &quot;.png&quot;), System.Drawing.Imaging.ImageFormat.Png)&#xA;    End Using&#xA;Catch shotEx As Exception&#xA;    LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; stamp &amp; &quot;]   (screenshot not saved: &quot; &amp; shotEx.Message &amp; &quot;)&quot; &amp; Environment.NewLine&#xA;End Try&#xA;&#xA;Dim msgText As String = caughtEx.Message.Replace(&quot;&quot;&quot;&quot;, &quot;'&quot;).Replace(vbCr, &quot; &quot;).Replace(vbLf, &quot; &quot;)&#xA;ReportRows = ReportRows &amp; &quot;&quot;&quot;&quot; &amp; RunId &amp; &quot;&quot;&quot;,&quot;&quot;&quot; &amp; stamp &amp; &quot;&quot;&quot;,&quot;&quot;&quot; &amp; If(caseKey, &quot;&quot;) &amp; &quot;&quot;&quot;,&quot;&quot;&quot; &amp; String.Join(&quot;; &quot;, names).Replace(&quot;&quot;&quot;&quot;, &quot;'&quot;) &amp; &quot;&quot;&quot;,,,,,,,,,,,&quot;&quot;Error&quot;&quot;,&quot;&quot;&quot; &amp; msgText &amp; &quot;&quot;&quot;&quot; &amp; Environment.NewLine&#xA;" DisplayName="Screenshot + log + move to _failed" sap2010:WorkflowViewState.IdRef="InvokeCode_32">
+<ui:InvokeCode.Arguments>
+<InArgument x:TypeArguments="s:String[]" x:Key="caseFiles">[caseFiles]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="FailedDir">[FailedDir]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="caseKey">[caseKey]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="RunId">[RunId]</InArgument>
+<InArgument x:TypeArguments="s:Exception" x:Key="caughtEx">[exception]</InArgument>
+<InOutArgument x:TypeArguments="x:Int32" x:Key="failedCount">[failedCount]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="ReportRows">[ReportRows]</InOutArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="LogBuilderStr">[LogBuilderStr]</InOutArgument>
+</ui:InvokeCode.Arguments>
+</ui:InvokeCode>
+<ui:LogMessage DisplayName="Log error" sap2010:WorkflowViewState.IdRef="LogMessage_33" Level="[UiPath.Core.Activities.LogLevel.Error]" Message="[&quot;Case &quot; &amp; caseKey &amp; &quot; failed: &quot; &amp; exception.Message]" />
+</Sequence>
+</ActivityAction>
+</Catch>
+</TryCatch.Catches>
+</TryCatch>
+</Sequence>
+</ActivityAction>
+</ui:ForEach.Body>
+</ui:ForEach>
+<ui:InvokeCode ContinueOnError="{x:Null}" Code="' Reporting (errors + summary): run log and a CSV report per run in &lt;InboxRoot&gt;\_reports.&#xA;Dim finished As DateTime = DateTime.Now&#xA;Dim sb As New System.Text.StringBuilder()&#xA;sb.AppendLine(&quot;DHL Incident RPA - Run Summary (Scenario 2)&quot;)&#xA;sb.AppendLine(&quot;===========================================&quot;)&#xA;sb.AppendLine(&quot;Run ID:        &quot; &amp; RunId)&#xA;sb.AppendLine(&quot;Started:       &quot; &amp; RunStartTime.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;))&#xA;sb.AppendLine(&quot;Finished:      &quot; &amp; finished.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;))&#xA;sb.AppendLine(&quot;Duration:      &quot; &amp; (finished - RunStartTime).TotalSeconds.ToString(&quot;0.0&quot;) &amp; &quot; s&quot;)&#xA;sb.AppendLine(&quot;&quot;)&#xA;sb.AppendLine(&quot;Fetched&quot;)&#xA;sb.AppendLine(&quot;-------&quot;)&#xA;sb.AppendLine(&quot;Gmail emails:  &quot; &amp; gmailFetchedCount.ToString())&#xA;sb.AppendLine(&quot;Drive files:   &quot; &amp; driveFetchedCount.ToString())&#xA;sb.AppendLine(&quot;&quot;)&#xA;sb.AppendLine(&quot;Results&quot;)&#xA;sb.AppendLine(&quot;-------&quot;)&#xA;sb.AppendLine(&quot;Cases found:   &quot; &amp; caseCount.ToString())&#xA;sb.AppendLine(&quot;Created:       &quot; &amp; createdCount.ToString())&#xA;sb.AppendLine(&quot;Merged:        &quot; &amp; mergedCount.ToString())&#xA;sb.AppendLine(&quot;Duplicates:    &quot; &amp; duplicateCount.ToString())&#xA;sb.AppendLine(&quot;Failed:        &quot; &amp; failedCount.ToString())&#xA;sb.AppendLine(&quot;AI extracted:  &quot; &amp; aiSuccessCount.ToString())&#xA;sb.AppendLine(&quot;AI fallback:   &quot; &amp; aiFallbackCount.ToString())&#xA;sb.AppendLine(&quot;&quot;)&#xA;sb.AppendLine(&quot;Report CSV:    &quot; &amp; ReportCsvFile)&#xA;sb.AppendLine(&quot;&quot;)&#xA;sb.AppendLine(&quot;Detailed log&quot;)&#xA;sb.AppendLine(&quot;------------&quot;)&#xA;sb.Append(LogBuilderStr)&#xA;&#xA;RunSummaryText = sb.ToString()&#xA;System.IO.File.WriteAllText(RunLogFile, RunSummaryText, System.Text.Encoding.UTF8)&#xA;System.IO.File.WriteAllText(ReportCsvFile, ReportRows, New System.Text.UTF8Encoding(True))&#xA;" DisplayName="6. Reporting - write run log + CSV report" sap2010:WorkflowViewState.IdRef="InvokeCode_39">
+<ui:InvokeCode.Arguments>
+<InArgument x:TypeArguments="x:String" x:Key="RunId">[RunId]</InArgument>
+<InArgument x:TypeArguments="s:DateTime" x:Key="RunStartTime">[RunStartTime]</InArgument>
+<InArgument x:TypeArguments="x:Int32" x:Key="gmailFetchedCount">[gmailFetchedCount]</InArgument>
+<InArgument x:TypeArguments="x:Int32" x:Key="driveFetchedCount">[driveFetchedCount]</InArgument>
+<InArgument x:TypeArguments="x:Int32" x:Key="caseCount">[caseCount]</InArgument>
+<InArgument x:TypeArguments="x:Int32" x:Key="createdCount">[createdCount]</InArgument>
+<InArgument x:TypeArguments="x:Int32" x:Key="mergedCount">[mergedCount]</InArgument>
+<InArgument x:TypeArguments="x:Int32" x:Key="duplicateCount">[duplicateCount]</InArgument>
+<InArgument x:TypeArguments="x:Int32" x:Key="failedCount">[failedCount]</InArgument>
+<InArgument x:TypeArguments="x:Int32" x:Key="aiSuccessCount">[aiSuccessCount]</InArgument>
+<InArgument x:TypeArguments="x:Int32" x:Key="aiFallbackCount">[aiFallbackCount]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="ReportCsvFile">[ReportCsvFile]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="RunLogFile">[RunLogFile]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="ReportRows">[ReportRows]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="LogBuilderStr">[LogBuilderStr]</InArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="RunSummaryText">[RunSummaryText]</InOutArgument>
+</ui:InvokeCode.Arguments>
+</ui:InvokeCode>
+<If Condition="[EmailSummaryEnabled AndAlso Not String.IsNullOrWhiteSpace(SmtpUser) AndAlso Not String.IsNullOrWhiteSpace(AdminEmail)]" DisplayName="7. Email summary to admin (if enabled)" sap2010:WorkflowViewState.IdRef="If_41">
+<If.Then>
+<ui:InvokeCode ContinueOnError="{x:Null}" Code="' Email the run summary + CSV report to the admin (Gmail: use an App Password, not the normal password).&#xA;Try&#xA;    Using client As New System.Net.Mail.SmtpClient(SmtpHost, SmtpPort)&#xA;        client.EnableSsl = True&#xA;        client.Credentials = New System.Net.NetworkCredential(SmtpUser, SmtpPassword)&#xA;        Using msg As New System.Net.Mail.MailMessage()&#xA;            msg.From = New System.Net.Mail.MailAddress(SmtpUser, &quot;DHL Incident RPA Bot&quot;)&#xA;            msg.To.Add(AdminEmail)&#xA;            msg.Subject = &quot;DHL RPA Run &quot; &amp; RunId &amp; &quot; | cases:&quot; &amp; caseCount.ToString() &amp; &quot; created:&quot; &amp; createdCount.ToString() &amp; &quot; merged:&quot; &amp; mergedCount.ToString() &amp; &quot; dup:&quot; &amp; duplicateCount.ToString() &amp; &quot; failed:&quot; &amp; failedCount.ToString()&#xA;            msg.Body = RunSummaryText&#xA;            If System.IO.File.Exists(ReportCsvFile) Then&#xA;                msg.Attachments.Add(New System.Net.Mail.Attachment(ReportCsvFile))&#xA;            End If&#xA;            client.Send(msg)&#xA;        End Using&#xA;    End Using&#xA;    LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;) &amp; &quot;] Summary email sent to &quot; &amp; AdminEmail &amp; Environment.NewLine&#xA;Catch ex As Exception&#xA;    LogBuilderStr = LogBuilderStr &amp; &quot;[&quot; &amp; DateTime.Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;) &amp; &quot;] WARN summary email failed: &quot; &amp; ex.Message &amp; Environment.NewLine&#xA;End Try&#xA;" DisplayName="Send summary email" sap2010:WorkflowViewState.IdRef="InvokeCode_40">
+<ui:InvokeCode.Arguments>
+<InArgument x:TypeArguments="x:String" x:Key="SmtpHost">[SmtpHost]</InArgument>
+<InArgument x:TypeArguments="x:Int32" x:Key="SmtpPort">[SmtpPort]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="SmtpUser">[SmtpUser]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="SmtpPassword">[SmtpPassword]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="AdminEmail">[AdminEmail]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="RunId">[RunId]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="RunSummaryText">[RunSummaryText]</InArgument>
+<InArgument x:TypeArguments="x:String" x:Key="ReportCsvFile">[ReportCsvFile]</InArgument>
+<InArgument x:TypeArguments="x:Int32" x:Key="caseCount">[caseCount]</InArgument>
+<InArgument x:TypeArguments="x:Int32" x:Key="createdCount">[createdCount]</InArgument>
+<InArgument x:TypeArguments="x:Int32" x:Key="mergedCount">[mergedCount]</InArgument>
+<InArgument x:TypeArguments="x:Int32" x:Key="duplicateCount">[duplicateCount]</InArgument>
+<InArgument x:TypeArguments="x:Int32" x:Key="failedCount">[failedCount]</InArgument>
+<InOutArgument x:TypeArguments="x:String" x:Key="LogBuilderStr">[LogBuilderStr]</InOutArgument>
+</ui:InvokeCode.Arguments>
+</ui:InvokeCode>
+</If.Then>
+</If>
+<ui:LogMessage DisplayName="Final summary" sap2010:WorkflowViewState.IdRef="LogMessage_42" Level="[UiPath.Core.Activities.LogLevel.Info]" Message="[&quot;RUN DONE &quot; &amp; RunId &amp; &quot; | cases:&quot; &amp; caseCount.ToString() &amp; &quot; created:&quot; &amp; createdCount.ToString() &amp; &quot; merged:&quot; &amp; mergedCount.ToString() &amp; &quot; dup:&quot; &amp; duplicateCount.ToString() &amp; &quot; failed:&quot; &amp; failedCount.ToString() &amp; &quot; AI:&quot; &amp; aiSuccessCount.ToString() &amp; &quot;/&quot; &amp; caseCount.ToString() &amp; &quot; | report: &quot; &amp; ReportCsvFile]" />
+</Sequence>
+</Activity>

@@ -1,12 +1,13 @@
 const express = require('express');
 const { authMiddleware } = require('../middleware/auth');
-const { getIncidents } = require('../utils/filedb');
+const { getIncidents } = require('../utils/db');
+const asyncHandler = require('../utils/asyncHandler');
 
 const router = express.Router();
 
 // Get management summary report
-router.get('/summary', authMiddleware, (req, res) => {
-  const incidents = getIncidents();
+router.get('/summary', authMiddleware, asyncHandler(async (req, res) => {
+  const incidents = await getIncidents();
 
   const summary = {
     generatedAt: new Date().toISOString(),
@@ -43,7 +44,7 @@ router.get('/summary', authMiddleware, (req, res) => {
   };
 
   res.json(summary);
-});
+}));
 
 // Helper function to calculate average resolution time
 const calculateAvgResolutionTime = (incidents) => {

@@ -1,20 +1,5 @@
 [
   {
-    "id": "INC-001",
-    "trackingNumber": "MY987623400",
-    "title": "Damaged Parcel",
-    "description": "Coffee machine crushed during transit",
-    "priority": "HIGH",
-    "category": "Damage",
-    "status": "open",
-    "assignedTo": "agent01",
-    "createdAt": "2026-05-10T08:30:00Z",
-    "updatedAt": "2026-05-10T08:30:00Z",
-    "resolvedAt": null,
-    "notes": [],
-    "attachments": []
-  },
-  {
     "id": "INC-002",
     "trackingNumber": "MY44567789",
     "title": "Address Change Not Actioned",
@@ -49,5 +34,43 @@
     "resolvedAt": null,
     "notes": [],
     "attachments": []
+  },
+  {
+    "id": "INC-003",
+    "trackingNumber": "MY9990132",
+    "title": "CargoCrash",
+    "description": "testing",
+    "priority": "MEDIUM",
+    "category": "General",
+    "status": "open",
+    "assignedTo": null,
+    "createdAt": "2026-05-15T00:52:32.143Z",
+    "updatedAt": "2026-05-15T00:52:32.143Z",
+    "resolvedAt": null,
+    "notes": [],
+    "attachments": []
+  },
+  {
+    "id": "INC-004",
+    "trackingNumber": "...",
+    "title": "...",
+    "description": "...",
+    "priority": "HIGH",
+    "category": "Damage",
+    "department": null,
+    "status": "open",
+    "assignedTo": null,
+    "createdAt": "2026-07-05T03:45:54.564Z",
+    "updatedAt": "2026-07-05T03:45:54.564Z",
+    "resolvedAt": null,
+    "notes": [],
+    "attachments": [],
+    "aiMetadata": {
+      "confidenceLevel": null,
+      "classificationReason": null,
+      "requiresHitl": false,
+      "source": "manual",
+      "hash": null
+    }
   }
 ]

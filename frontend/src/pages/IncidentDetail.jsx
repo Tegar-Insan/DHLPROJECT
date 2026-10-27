@@ -120,6 +120,73 @@ export default function IncidentDetail() {
           </div>
         </div>
 
+        {/* AI Analysis Card (incidents imported by the UiPath bot) */}
+        {incident.ai && incident.ai.used && (
+          <div className="card" style={{ gridColumn: '1 / -1', borderLeft: '4px solid var(--dhl-yellow, #ffcc00)' }}>
+            <div className="card-header">
+              <h3 className="card-title">🤖 AI Analysis</h3>
+              <span style={{ fontSize: '12px', color: '#999' }}>
+                {incident.ai.provider} {incident.ai.model} · confidence {Number(incident.ai.confidence || 0).toFixed(2)}
+              </span>
+            </div>
+
+            {incident.ai.keyProblem && (
+              <p style={{ fontWeight: 'bold', marginBottom: '12px' }}>{incident.ai.keyProblem}</p>
+            )}
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '12px', marginBottom: '16px' }}>
+              <div>
+                <p style={{ color: '#999', fontSize: '12px', marginBottom: '4px' }}>AI Category</p>
+                <p>{incident.ai.category}</p>
+              </div>
+              <div>
+                <p style={{ color: '#999', fontSize: '12px', marginBottom: '4px' }}>Department</p>
+                <p>{incident.ai.department || '-'}</p>
+              </div>
+              <div>
+                <p style={{ color: '#999', fontSize: '12px', marginBottom: '4px' }}>AI Priority</p>
+                <p>{incident.ai.priority}</p>
+              </div>
+              <div>
+                <p style={{ color: '#999', fontSize: '12px', marginBottom: '4px' }}>Sentiment</p>
+                <p>{incident.ai.customerSentiment || '-'}{incident.ai.escalationRisk ? ' ⚠️ escalation risk' : ''}</p>
+              </div>
+              <div>
+                <p style={{ color: '#999', fontSize: '12px', marginBottom: '4px' }}>Channels</p>
+                <p>{(incident.channels || []).join(' + ') || '-'}</p>
+              </div>
+              {incident.possibleDuplicateOf && (
+                <div>
+                  <p style={{ color: '#999', fontSize: '12px', marginBottom: '4px' }}>Possible Duplicate</p>
+                  <p><a href={`/incidents/${incident.possibleDuplicateOf}`}>{incident.possibleDuplicateOf}</a></p>
+                </div>
+              )}
+            </div>
+
+            {incident.ai.priorityReason && (
+              <p style={{ fontSize: '14px', color: '#555', marginBottom: '12px' }}><strong>Why this priority:</strong> {incident.ai.priorityReason}</p>
+            )}
+
+            {[
+              ['Issues found', incident.ai.issuesFound],
+              ['Recommended actions', incident.ai.recommendedActions],
+              ['Missing information', incident.ai.missingInformation],
+              ['Timeline', incident.ai.timeline]
+            ].filter(([, items]) => items && items.length > 0).map(([label, items]) => (
+              <div key={label} style={{ marginBottom: '12px' }}>
+                <p style={{ color: '#999', fontSize: '12px', marginBottom: '4px' }}>{label}</p>
+                <ul style={{ paddingLeft: '20px', margin: 0 }}>
+                  {items.map((item, idx) => <li key={idx}>{item}</li>)}
+                </ul>
+              </div>
+            ))}
+
+            {incident.ai.imageFindings && (
+              <p style={{ fontSize: '14px' }}><strong>Image findings:</strong> {incident.ai.imageFindings}</p>
+            )}
+          </div>
+        )}
+
         {/* Status Update Card */}
         <div className="card">
           <div className="card-header">

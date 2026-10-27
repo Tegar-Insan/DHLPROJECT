@@ -6,4 +6,5 @@ CLAUDE.md
 .env
 .DS_Store
 PROGRESS.md
+frontend/.env
 

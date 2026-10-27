@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "db:setup": "node scripts/setup-db.js"
   },
   "keywords": ["dhl", "incident", "management"],
   "author": "",
@@ -14,6 +15,7 @@
     "express": "^4.18.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
-    "jsonwebtoken": "^9.0.0"
+    "jsonwebtoken": "^9.0.0",
+    "mysql2": "^3.11.0"
   }
 }

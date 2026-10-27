@@ -3,17 +3,19 @@ const { authMiddleware } = require('../middleware/auth');
 const {
   getIncidents,
   getIncidentById,
-  createIncident,
+  saveIncident,
   updateIncident,
-  deleteIncident
-} = require('../utils/filedb');
+  deleteIncident,
+  nextIncidentId
+} = require('../utils/db');
+const asyncHandler = require('../utils/asyncHandler');
 
 const router = express.Router();
 
 // Get all incidents (with optional filters)
-router.get('/', authMiddleware, (req, res) => {
+router.get('/', authMiddleware, asyncHandler(async (req, res) => {
   const { status, priority, assignedTo, category } = req.query;
-  let incidents = getIncidents();
+  let incidents = await getIncidents();
 
   // Apply filters
   if (status) {
@@ -30,11 +32,11 @@ router.get('/', authMiddleware, (req, res) => {
   }
 
   res.json(incidents);
-});
+}));
 
 // Get stats for dashboard
-router.get('/stats', authMiddleware, (req, res) => {
-  const incidents = getIncidents();
+router.get('/stats', authMiddleware, asyncHandler(async (req, res) => {
+  const incidents = await getIncidents();
 
   const stats = {
     totalIncidents: incidents.length,
@@ -56,27 +58,43 @@ router.get('/stats', authMiddleware, (req, res) => {
   };
 
   res.json(stats);
-});
+}));
 
 // Get single incident
-router.get('/:id', authMiddleware, (req, res) => {
-  const incident = getIncidentById(req.params.id);
+router.get('/:id', authMiddleware, asyncHandler(async (req, res) => {
+  const incident = await getIncidentById(req.params.id);
   if (!incident) {
     return res.status(404).json({ error: 'Incident not found' });
   }
   res.json(incident);
-});
+}));
+
+// Check if a hash was already processed in the last 14 days (RPA dedup)
+router.get('/check-duplicate/:hash', authMiddleware, asyncHandler(async (req, res) => {
+  const { hash } = req.params;
+  const incidents = await getIncidents();
+  const fourteenDaysAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000);
+
+  const match = incidents.find(i =>
+    i.aiMetadata?.hash === hash && new Date(i.createdAt) >= fourteenDaysAgo
+  );
+
+  res.json({ isDuplicate: !!match, existingIncidentId: match ? match.id : null });
+}));
 
 // Create incident
-router.post('/', authMiddleware, (req, res) => {
-  const { trackingNumber, title, description, priority, category } = req.body;
+router.post('/', authMiddleware, asyncHandler(async (req, res) => {
+  const {
+    trackingNumber, title, description, priority, category,
+    department, confidenceLevel, classificationReason, requiresHitl,
+    source, hash, attachments
+  } = req.body;
 
   if (!trackingNumber || !title || !description || !priority || !category) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  const incidents = getIncidents();
-  const newId = `INC-${String(incidents.length + 1).padStart(3, '0')}`;
+  const newId = nextIncidentId(await getIncidents());
 
   const newIncident = {
     id: newId,
@@ -85,30 +103,38 @@ router.post('/', authMiddleware, (req, res) => {
     description,
     priority,
     category,
-    status: 'open',
+    department: department || null,
+    status: requiresHitl ? 'pending_review' : 'open',
     assignedTo: null,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     resolvedAt: null,
     notes: [],
-    attachments: []
+    attachments: attachments || [],
+    aiMetadata: {
+      confidenceLevel: confidenceLevel != null ? confidenceLevel : null,
+      classificationReason: classificationReason || null,
+      requiresHitl: requiresHitl || false,
+      source: source || 'manual',
+      hash: hash || null
+    }
   };
 
-  createIncident(newIncident);
+  await saveIncident(newIncident);
   res.status(201).json(newIncident);
-});
+}));
 
 // Update incident
-router.put('/:id', authMiddleware, (req, res) => {
-  const incident = updateIncident(req.params.id, req.body);
+router.put('/:id', authMiddleware, asyncHandler(async (req, res) => {
+  const incident = await updateIncident(req.params.id, req.body);
   if (!incident) {
     return res.status(404).json({ error: 'Incident not found' });
   }
   res.json(incident);
-});
+}));
 
 // Update incident status only
-router.patch('/:id/status', authMiddleware, (req, res) => {
+router.patch('/:id/status', authMiddleware, asyncHandler(async (req, res) => {
   const { status } = req.body;
   if (!status) {
     return res.status(400).json({ error: 'Status is required' });
@@ -119,20 +145,20 @@ router.patch('/:id/status', authMiddleware, (req, res) => {
     updates.resolvedAt = new Date().toISOString();
   }
 
-  const incident = updateIncident(req.params.id, updates);
+  const incident = await updateIncident(req.params.id, updates);
   if (!incident) {
     return res.status(404).json({ error: 'Incident not found' });
   }
   res.json(incident);
-});
+}));
 
 // Delete incident
-router.delete('/:id', authMiddleware, (req, res) => {
-  const success = deleteIncident(req.params.id);
+router.delete('/:id', authMiddleware, asyncHandler(async (req, res) => {
+  const success = await deleteIncident(req.params.id);
   if (!success) {
     return res.status(404).json({ error: 'Incident not found' });
   }
   res.json({ message: 'Incident deleted' });
-});
+}));
 
 module.exports = router;
